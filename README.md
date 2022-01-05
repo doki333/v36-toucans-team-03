@@ -1,14 +1,49 @@
-# voyage-tasks
+Christmas Lights Collaboration Project
 
-Your project's `readme` is as important to success as your code. For 
-this reason you should put as much care into its creation and maintenance
-as you would any other component of the application.
+![GitHub last commit](https://img.shields.io/github/last-commit/ASimpleCodingHermit/Christmas-Lights)
+![GitHub language count](https://img.shields.io/github/languages/count/ASimpleCodingHermit/Christmas-Lights)
 
-If you are unsure of what should go into the `readme` let this article,
-written by an experienced Chingu, be your starting point - 
-[Keys to a well written README](https://tinyurl.com/yk3wubft).
+- [Overview](#overview)
+- [Project Status](#project-status)
+- [Application Purpose](#application-purpose)
+- [Technology Used](#technology-used)
+  - [Languages](#languages)
+  - [Frameworks](#frameworks)
+- [Obstacles](#obstacles)
+- [Dependencies](#dependencies)
+- [Authors](#authors)
 
-And before we go there's "one more thing"! Once you decide what to include
-in your `readme` feel free to replace the text we've provided here.
+# Overview
 
-> Own it & Make it your Own!
+# Project Status
+
+| Stage       | Time To Complete | Current Status   | Finished             |
+| ----------- | ---------------- | ---------------- | -------------------- |
+| Design      | 0 Days           | Work In Progress | [] Completed [] Todo |
+| Development | 0 Days           | Work In Progress | [] Completed [] Todo |
+| Testing     | 0 Days           | Work In Progress | [] Completed [] Todo |
+| Production  | 0 Days           | Work In Progress | [] Completed [] Todo |
+
+# Application Purpose
+
+# Technology Used
+
+## Languages
+
+- [x] HTML5
+- [x] CSS3
+- [x] Javascript
+
+## Frameworks
+
+- [x] [Bootstrap 5](https://getbootstrap.com/)
+
+# Obstacles
+
+# Dependencies
+
+- [x] Bootstrap 5
+
+# Authors
+
+- [x] [CodingHermit](www.github.com/ASimpleCodingHermit)
