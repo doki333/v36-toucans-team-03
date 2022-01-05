@@ -1,7 +1,7 @@
 Christmas Lights Collaboration Project
 
-![GitHub last commit](https://img.shields.io/github/last-commit/ASimpleCodingHermit/Christmas-Lights)
-![GitHub language count](https://img.shields.io/github/languages/count/ASimpleCodingHermit/Christmas-Lights)
+![GitHub last commit](https://img.shields.io/github/last-commit/ASimpleCodingHermit/chingu-voyages/v36-toucans-team-03)
+![GitHub language count](https://img.shields.io/github/languages/count/ASimpleCodingHermit/chingu-voyages/v36-toucans-team-03)
 
 - [Overview](#overview)
 - [Project Status](#project-status)
