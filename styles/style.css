@@ -1,0 +1,64 @@
+body {
+  background-color: #d1dce0;
+}
+
+.main_logo {
+  margin-top: 80px;
+  font-family: Bungee Outline;
+  font-size: 140px;
+  color: #19d3ab;
+  font-weight: 600;
+  text-shadow: -6px -3px 10px rgba(25, 211, 171, 1),
+    5px 10px 10px rgba(186, 204, 210, 1), 5px 2px 15px rgba(25, 211, 171, 0.5),
+    -6px -7px 10px rgba(221, 235, 240, 1);
+  animation: flicker 4s infinite;
+  line-height: 170px;
+  text-align: center;
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.1;
+  }
+
+  2% {
+    opacity: 1;
+  }
+  8% {
+    opacity: 0.1;
+  }
+  9% {
+    opacity: 1;
+  }
+  12% {
+    opacity: 0.1;
+  }
+  20% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.3;
+  }
+  30% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0.7;
+  }
+
+  72% {
+    opacity: 0.2;
+  }
+
+  77% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.9;
+  }
+}
+
+.btn_wrapper {
+  text-align: center;
+}
