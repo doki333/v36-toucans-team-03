@@ -51,6 +51,9 @@ body {
     opacity: 0.9;
   }
 }
+.btn_wrapper {
+  text-align: center;
+}
 .btn_wrapper .signUp_btn {
   backface-visibility: hidden;
   background-color: #294b57;
