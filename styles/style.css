@@ -4,7 +4,7 @@ body {
 
 .main_logo {
   -webkit-animation: flicker 4s infinite;
-          animation: flicker 4s infinite;
+  animation: flicker 4s infinite;
   color: #19d3ab;
   font-family: Bungee Outline;
   font-size: 140px;
@@ -98,12 +98,12 @@ body {
 
 .btn_wrapper .signUp_btn {
   -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
+  backface-visibility: hidden;
   background-color: #294b57;
   border-radius: 3rem;
   border: 0.3rem solid #19d3ab;
   color: #19d3ab;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 18px;
   font-weight: 700;
   margin-right: 100px;
@@ -113,24 +113,25 @@ body {
   -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
   transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
   transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95), -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95),
+    -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
 }
 
 .btn_wrapper .signUp_btn:hover {
   -webkit-transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
-          transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
+  transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
   background-color: #19d3ab;
   color: #294b57;
 }
 
 .btn_wrapper .signIn_btn {
   -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
+  backface-visibility: hidden;
   background-color: #294b57;
   border-radius: 3rem;
   border: 0.3rem solid #19d3ab;
   color: #19d3ab;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 18px;
   font-weight: 700;
   padding: 0.7rem 2rem;
@@ -139,13 +140,72 @@ body {
   -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
   transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
   transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95), -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95),
+    -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
 }
 
 .btn_wrapper .signIn_btn:hover {
   -webkit-transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
-          transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
+  transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
   background-color: #19d3ab;
   color: #294b57;
+}
+
+/* modal */
+
+.signUp_modal,
+.signIn_modal {
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: left;
+}
+.active {
+  display: block;
+}
+.signUp_modal .form_wrapper {
+  font-family: 'Poppins', sans-serif;
+  background-color: #19d3ab;
+  border-radius: 3rem;
+  width: 30rem;
+  height: 30rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0px 3rem;
+}
+
+.signIn_modal .form_wrapper {
+  font-family: 'Poppins', sans-serif;
+  background-color: #19d3ab;
+  border-radius: 3rem;
+  width: 30rem;
+  height: 30rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0px 3rem;
+}
+
+.signUp_form,
+.signIn_form {
+  width: 100%;
+}
+
+.signUp_label,
+.signIn_label {
+  display: block;
+  font-size: 1.5rem;
+}
+
+.signUp_text, .signIn_text {
+  font-size: 2.5rem;
+  margin: 2rem 0px"
 }
 /*# sourceMappingURL=style.css.map */
