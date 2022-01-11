@@ -168,6 +168,7 @@ body {
   display: block;
 }
 .signUp_modal .form_wrapper {
+  font-family: 'Poppins', sans-serif;
   background-color: #19d3ab;
   border-radius: 3rem;
   width: 30rem;
@@ -180,6 +181,7 @@ body {
 }
 
 .signIn_modal .form_wrapper {
+  font-family: 'Poppins', sans-serif;
   background-color: #19d3ab;
   border-radius: 3rem;
   width: 30rem;
