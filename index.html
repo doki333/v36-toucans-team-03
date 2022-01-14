@@ -35,12 +35,7 @@
 			</div>
 			<div class="signUp_modal">
 				<div class="form_wrapper">
-					<form
-						method="post"
-						action="#"
-						class="signUp_form"
-						onsubmit="return validateForm();"
-					>
+					<form class="signUp_form" onsubmit="return validateForm();">
 						<p class="signUp_text">Sign Up</p>
 						<div class="form_content">
 							<label for="name" class="signUp_label">Name</label>
@@ -50,8 +45,8 @@
 								id="name"
 								class="signUp_input"
 								placeholder="Username"
-								required
 							/>
+							<small></small>
 						</div>
 						<div class="form_content">
 							<label for="email" class="signUp_label">Email</label>
@@ -61,8 +56,8 @@
 								id="email"
 								class="signUp_input"
 								placeholder="Email"
-								required
 							/>
+							<small></small>
 						</div>
 						<div class="form_content">
 							<label for="password" class="signUp_label">Password</label>
@@ -72,11 +67,11 @@
 								id="password"
 								class="signUp_input"
 								placeholder="Password"
-								required
 							/>
+							<small></small>
 						</div>
 						<div class="signUp_btns">
-							<button type="submit" class="signUp_btn">Sign Up</button>
+							<button type="button" class="signUp_btn">Sign Up</button>
 							<button type="button" class="signUp_cancel">Cancel</button>
 						</div>
 					</form>

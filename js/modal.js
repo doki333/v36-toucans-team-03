@@ -1,5 +1,7 @@
 // Modal Validation functionality
-function validateForm() {}
+form.addEventListener('submit', function (e) {
+	e.preventDefault();
+});
 const username = document.signUpForm.name.value;
 const signUpEmail = document.signUpForm.email.value;
 const signUpPass = document.signUpForm.password.value;
@@ -17,10 +19,26 @@ const isEmailValid = (email) => {
 	return re.test(email);
 };
 
+// Show Error
 const showError = (input, message) => {
 	// Get the form field Input
-	const formField = input.parentElement;
+	const formContent = input.parentElement;
 	// Add the error class
-	formField.classList.remove('success');
-	formField.classList.add('error');
+	formContent.classList.remove('success');
+	formContent.classList.add('error');
+	// Display the error message
+	const error = formContent.queryselector('small');
+	error.textContent = message;
+};
+
+// Show Success
+const showSuccess = (input, message) => {
+	// Get the form field Input
+	const formContent = input.parentElement;
+	// Add the error class
+	formContent.classList.remove('error');
+	formContent.classList.add('success');
+	// Display the error message
+	const error = formContent.queryselector('small');
+	error.textContent = message;
 };
