@@ -35,7 +35,12 @@
 			</div>
 			<div class="signUp_modal">
 				<div class="form_wrapper">
-					<form action="" class="signUp_form">
+					<form
+						method="post"
+						action="#"
+						class="signUp_form"
+						onsubmit="return validateForm();"
+					>
 						<p class="signUp_text">Sign Up</p>
 						<div class="form_content">
 							<label for="name" class="signUp_label">Name</label>
@@ -71,7 +76,7 @@
 							/>
 						</div>
 						<div class="signUp_btns">
-							<button type="button" class="signUp_btn">Sign Up</button>
+							<button type="submit" class="signUp_btn">Sign Up</button>
 							<button type="button" class="signUp_cancel">Cancel</button>
 						</div>
 					</form>
@@ -79,7 +84,7 @@
 			</div>
 			<div class="signIn_modal">
 				<div class="form_wrapper">
-					<form action="" class="signIn_form">
+					<form action="" class="signIn_form" name="signInForm">
 						<p class="signIn_text">Sign In</p>
 						<div class="form_content">
 							<label for="email" class="signIn_label">Email</label>
@@ -102,7 +107,9 @@
 							/>
 						</div>
 						<div class="signIn_btns">
-							<button type="button" class="signIn_btn">Sign In</button>
+							<button type="button" class="signIn_btn">
+								<a href="map.html">Sign In</a>
+							</button>
 							<button type="button" class="signIn_cancel">Cancel</button>
 						</div>
 					</form>
@@ -110,5 +117,6 @@
 			</div>
 		</div>
 		<script src="js/script.js"></script>
+		<script src="js/modal.js"></script>
 	</body>
 </html>
