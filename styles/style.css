@@ -178,6 +178,7 @@ body {
   width: 100%;
   height: 100%;
   position: absolute;
+  overflow: auto;
   top: 0;
   left: 0;
   text-align: left;
@@ -196,6 +197,7 @@ body {
   top: 50%;
   transform: translate(-50%, -50%);
   padding: 0px 3rem;
+  animation: slide-up 0.5s forwards cubic-bezier(0.4, 0, 0, 1.5);
 }
 
 .signIn_modal .form_wrapper {
@@ -209,6 +211,18 @@ body {
   top: 50%;
   transform: translate(-50%, -50%);
   padding: 0px 3rem;
+  animation: slide-up 0.5s forwards cubic-bezier(0.4, 0, 0, 1.5);
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translate3d(-50%, -40%, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0);
+    opacity: 1;
+  }
 }
 
 .signUp_form,
@@ -271,12 +285,15 @@ body {
   width: 45%;
   height: 3rem;
   font-size: 1.2rem;
+  font-family: "Poppins", sans-serif;
   color: #294b57;
   font-weight: 600;
   background-color: #19d3ab;
   border: 0.2rem solid #294b57;
   border-radius: 100px;
   padding: 0.5rem 1rem;
+  text-decoration: none;
+  text-align: center;
 
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -327,6 +344,44 @@ body {
     margin-top: 3rem;
   }
 
+  .signUp_modal .form_wrapper {
+    font-family: "Poppins", sans-serif;
+    background-color: #19d3ab;
+    border-radius: 3rem;
+    width: 20rem;
+    height: 24rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0px 2rem;
+  }
+
+  .signIn_modal .form_wrapper {
+    font-family: "Poppins", sans-serif;
+    background-color: #19d3ab;
+    border-radius: 3rem;
+    width: 20rem;
+    height: 20rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0px 2rem;
+  }
+
+  .signUp_label,
+  .signIn_label {
+    display: block;
+    font-size: 1rem;
+  }
+
+  .signUp_text,
+  .signIn_text {
+    font-size: 2rem;
+    margin: 1rem 0px;
+  }
+
   .btn_wrapper .signIn_btn {
     display: block;
     margin: 1rem auto;
@@ -338,12 +393,12 @@ body {
     margin: 0 auto;
     width: 15rem;
   }
+}
 
-  @media only screen and (min-width: 790px) and (max-width: 1024px) {
-    .main_logo {
-      font-size: 100px;
-      margin-top: 400px;
-      text-align: center;
-    }
+@media only screen and (min-width: 790px) and (max-width: 1024px) {
+  .main_logo {
+    font-size: 100px;
+    margin-top: 400px;
+    text-align: center;
   }
 }

@@ -1,114 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles/style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bungee+Outline&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
-      rel="stylesheet"
-    />
-    <title>Charging U App</title>
-  </head>
-  <body>
-    <div class="page_wrapper">
-      <img
-        src="logo.png"
-        alt="logo image"
-        title="logo image"
-        class="square_logo"
-      />
-      <p class="main_logo">
-        CHARGING <br />
-        U
-      </p>
-      <div class="btn_wrapper">
-        <button type="button" class="signUp_btn">Sign Up</button>
-        <button type="button" class="signIn_btn">Sign In</button>
-      </div>
-      <div class="signUp_modal">
-        <div class="form_wrapper">
-          <form action="" class="signUp_form">
-            <p class="signUp_text">Sign Up</p>
-            <div class="form_content">
-              <label for="name" class="signUp_label">Name</label>
-              <input
-                name="name"
-                type="text"
-                id="name"
-                class="signUp_input"
-                placeholder="Username"
-                required
-              />
-            </div>
-            <div class="form_content">
-              <label for="email" class="signUp_label">Email</label>
-              <input
-                name="email"
-                type="email"
-                id="email"
-                class="signUp_input"
-                placeholder="Email"
-                required
-              />
-            </div>
-            <div class="form_content">
-              <label for="password" class="signUp_label">Password</label>
-              <input
-                name="password"
-                type="password"
-                id="password"
-                class="signUp_input"
-                placeholder="Password"
-                required
-              />
-            </div>
-            <div class="signUp_btns">
-              <button type="button" class="signUp_btn">Sign Up</button>
-              <button type="button" class="signUp_cancel">Cancel</button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="signIn_modal">
-        <div class="form_wrapper">
-          <form action="" class="signIn_form">
-            <p class="signIn_text">Sign In</p>
-            <div class="form_content">
-              <label for="email" class="signIn_label">Email</label>
-              <input
-                name="email"
-                type="email"
-                id="email"
-                class="signIn_input"
-                required
-              />
-            </div>
-            <div class="form_content">
-              <label for="password" class="signIn_label">Password</label>
-              <input
-                name="password"
-                type="password"
-                id="password"
-                class="signIn_input"
-                required
-              />
-            </div>
-            <div class="signIn_btns">
-              <button type="button" class="signIn_btn">Sign Up</button>
-              <button type="button" class="signIn_cancel">Cancel</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <script src="js/script.js"></script>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="styles/style.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bungee+Outline&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+			rel="stylesheet"
+		/>
+		<title>Charging U App</title>
+	</head>
+	<body>
+		<div class="page_wrapper">
+			<img
+				src="logo.png"
+				alt="logo image"
+				title="logo image"
+				class="square_logo"
+			/>
+			<p class="main_logo">
+				CHARGING <br />
+				U
+			</p>
+			<div class="btn_wrapper">
+				<button type="button" class="signUp_btn">Sign Up</button>
+				<button type="button" class="signIn_btn">Sign In</button>
+			</div>
+			<div class="signUp_modal">
+				<div class="form_wrapper">
+					<form method="post" action="#" class="signUp_form">
+						<p class="signUp_text">Sign Up</p>
+						<div class="form_content">
+							<label for="name" class="signUp_label">Name</label>
+							<input
+								name="name"
+								type="text"
+								id="name"
+								class="signUp_input"
+								placeholder="Username"
+								required
+							/>
+							<small></small>
+						</div>
+						<div class="form_content">
+							<label for="email" class="signUp_label">Email</label>
+							<input
+								name="email"
+								type="email"
+								id="email"
+								class="signUp_input"
+								placeholder="Email"
+								required
+							/>
+							<small></small>
+						</div>
+						<div class="form_content">
+							<label for="password" class="signUp_label">Password</label>
+							<input
+								name="password"
+								type="password"
+								id="password"
+								class="signUp_input"
+								placeholder="Password"
+								required
+							/>
+							<small></small>
+						</div>
+						<div class="signUp_btns">
+							<input type="submit" class="signUp_btn" value="Submit" />
+							<input type="button" class="signUp_cancel" value="Cancel" />
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="signIn_modal">
+				<div class="form_wrapper">
+					<form action="" class="signIn_form" name="signInForm">
+						<p class="signIn_text">Sign In</p>
+						<div class="form_content">
+							<label for="email" class="signIn_label">Email</label>
+							<input
+								name="email"
+								type="email"
+								id="email"
+								class="signIn_input"
+								required
+							/>
+						</div>
+						<div class="form_content">
+							<label for="password" class="signIn_label">Password</label>
+							<input
+								name="password"
+								type="password"
+								id="password"
+								class="signIn_input"
+								required
+							/>
+						</div>
+						<div class="signIn_btns">
+							<a href="map.html" class="signIn_btn">Sign In</a>
+							<button type="button" class="signIn_cancel">Cancel</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script src="js/script.js"></script>
+		<script src="js/modal.js"></script>
+	</body>
 </html>
