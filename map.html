@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/map.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee+Outline&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+    <title>Charging U App</title>
+  </head>
+  <body>
+    <div class="mapPage_wrapper">
+      <div class="header">
+        <button type="button" class="profile_info">
+          <div class="info_inner"></div>
+        </button>
+      </div>
+      <div class="profile_modal">
+        <div class="modal_wrapper">
+          <div class="modal_dash">
+            <div class="profile_info2">
+              <div class="info_inner2"></div>
+            </div>
+            <div class="username_section">
+              <input
+                type="text"
+                name="username"
+                id="profile_username"
+                placeholder="Username"
+                disabled
+              />
+              <button type="button" class="edit_btn"></button>
+            </div>
+            <label for="profile_email" class="profile_label">📧Email📧</label>
+            <textarea name="profile_email" id="profile_email" disabled rows="2">
+exampdddddddddle@abc.com</textarea
+            >
+            <div class="profile_btns">
+              <button type="button" class="signOut_btn">Sign Out</button>
+              <button type="button" class="close_btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/map.js"></script>
+  </body>
+</html>

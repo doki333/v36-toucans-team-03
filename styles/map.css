@@ -1,0 +1,262 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #294b57 !important;
+  padding: 20px;
+}
+
+.header {
+  float: right;
+}
+
+.profile_info {
+  width: 60px;
+  height: 60px;
+  background-color: #294b57;
+  border-radius: 50%;
+  border: 4px solid #19d3ab;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.info_inner {
+  width: 25px;
+  height: 25px;
+  content: "";
+  background-color: #19d3ab;
+  margin: 0 auto;
+  border-radius: 50%;
+  display: block;
+  position: relative;
+  top: -10px;
+}
+.info_inner::after {
+  width: 60px;
+  height: 60px;
+  content: "";
+  background-color: #19d3ab;
+  position: relative;
+  top: 30px;
+  left: -16px;
+  display: block;
+  border-radius: 50%;
+}
+
+.profile_modal {
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow: auto;
+  top: 0;
+  left: 0;
+  text-align: left;
+}
+
+.active {
+  display: block;
+}
+
+.profile_modal .modal_wrapper {
+  font-family: "Poppins", sans-serif;
+  background-color: #19d3ab;
+  border-radius: 3rem;
+  border: 3px dashed #294b57;
+  outline: 0.5rem solid #19d3ab;
+  width: 20rem;
+  height: 20rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1rem 1.5rem;
+  text-align: center;
+  animation: slide-up 0.5s forwards cubic-bezier(0.4, 0, 0, 1.5);
+  -webkit-animation: slide-up 0.5s forwards cubic-bezier(0.4, 0, 0, 1.5);
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translate3d(-50%, -40%, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0);
+    opacity: 1;
+  }
+}
+
+.profile_info2 {
+  width: 70px;
+  height: 70px;
+  background-color: #19d3ab;
+  border-radius: 50%;
+  border: 4px solid #294b57;
+  overflow: hidden;
+  margin: 15px auto;
+}
+
+.info_inner2 {
+  width: 30px;
+  height: 30px;
+  content: "";
+  background-color: #294b57;
+  margin: 0 auto;
+  border-radius: 50%;
+  display: block;
+  position: relative;
+  top: 5px;
+}
+.info_inner2::after {
+  width: 60px;
+  height: 60px;
+  content: "";
+  background-color: #294b57;
+  position: relative;
+  top: 35px;
+  left: -16px;
+  display: block;
+  border-radius: 50%;
+}
+
+.profile_label {
+  display: block;
+  font-size: 1.3rem;
+  color: #294b57;
+  margin-top: 1rem;
+}
+
+.username_section {
+  width: 100%;
+  line-height: 30px;
+}
+
+#profile_email {
+  font-family: "Poppins", sans-serif;
+  background-color: transparent;
+  border: none;
+  height: 30px;
+  text-align: center;
+  outline: none;
+  border-radius: 100px;
+  width: 100%;
+  /* background-color: aliceblue; */
+  color: #294b57;
+  resize: none;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+#profile_username {
+  background-color: transparent;
+  border: none;
+  height: 30px;
+  text-align: center;
+  outline: none;
+  border-radius: 100px;
+  font-family: "Poppins", sans-serif;
+  padding: 0 1rem;
+}
+
+#profile_username::placeholder {
+  color: #294b57;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+#profile_email::placeholder {
+  color: #294b57;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.edit_btn {
+  width: 15px;
+  height: 15px;
+  background: url("../edit.png") no-repeat center;
+  background-size: 15px 15px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  left: -20px;
+}
+
+.editing {
+  width: 15px;
+  height: 15px;
+  background: url("../done.png") no-repeat center;
+  background-size: 15px 15px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  left: -20px;
+}
+
+.profile_btns {
+  margin-top: 1.2rem;
+}
+
+.profile_btns .signOut_btn {
+  width: 45%;
+  height: 2.5rem;
+  font-size: 1rem;
+  font-family: "Poppins", sans-serif;
+  color: #294b57;
+  font-weight: 600;
+  background-color: tomato;
+  border: 0.2rem solid #294b57;
+  border-radius: 100px;
+  padding: 0.3rem 0.7rem;
+  text-decoration: none;
+  text-align: center;
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+  transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95),
+    -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+}
+
+.profile_btns .close_btn {
+  width: 45%;
+  height: 2.5rem;
+  font-size: 1rem;
+  font-family: "Poppins", sans-serif;
+  color: #294b57;
+  font-weight: 600;
+  background-color: #19d3ab;
+  border: 0.2rem solid #294b57;
+  border-radius: 100px;
+  padding: 0.3rem 0.7rem;
+  text-decoration: none;
+  text-align: center;
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+  transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95),
+    -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+}
+
+.profile_btns .close_btn:hover {
+  -webkit-transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
+  transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
+  background-color: #294b57;
+  color: #19d3ab;
+}
+
+.profile_btns .signOut_btn:hover {
+  -webkit-transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
+  transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
+  background-color: #294b57;
+  color: tomato;
+}
