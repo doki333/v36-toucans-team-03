@@ -8,11 +8,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-------MAPBOX------->
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
-    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css" 
-    type="text/css"/>
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css"
+      type="text/css"
+    />
     <!-------ProfileLogo------->
     <link
       href="https://fonts.googleapis.com/css2?family=Bungee+Outline&display=swap"
@@ -60,8 +66,20 @@ exampdddddddddle@abc.com</textarea
         </div>
       </div>
     </div>
+    <!--------Search Bar--------->
+    <div class="user-location">
+      <form>
+        <input
+          type="text"
+          id="user-location"
+          placeholder="123 Lincoln St ..."
+        />
+        <button class="submit">Search</button>
+      </form>
+    </div>
     <!-------Map------->
-<div id='map'></div>
+    <div id="map"></div>
+    <div id="instructions"></div>
     <script src="js/map.js"></script>
   </body>
 </html>

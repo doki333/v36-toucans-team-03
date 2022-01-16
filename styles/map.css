@@ -57,6 +57,7 @@ body {
   top: 0;
   left: 0;
   text-align: left;
+  z-index: 20;
 }
 
 .active {
@@ -271,6 +272,20 @@ body {
   left: 10%;
   height: 80vh;
   width: 80vw;
-  border: solid ;
+  border: solid;
   border-color: #19d3ab;
+  z-index: 1;
+}
+
+#instructions {
+  position: absolute;
+  margin: 20px;
+  width: 25%;
+  top: 20%;
+  bottom: 20%;
+  padding: 20px;
+  background-color: #fff;
+  overflow-y: scroll;
+  font-family: sans-serif;
+  z-index: 10;
 }
