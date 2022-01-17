@@ -186,7 +186,7 @@ body {
 .edit_btn {
   width: 15px;
   height: 15px;
-  background: url("../edit.png") no-repeat center;
+  background: url("../image/edit.png") no-repeat center;
   background-size: 15px 15px;
   border: none;
   cursor: pointer;
@@ -197,7 +197,7 @@ body {
 .editing {
   width: 15px;
   height: 15px;
-  background: url("../done.png") no-repeat center;
+  background: url("../image/done.png") no-repeat center;
   background-size: 15px 15px;
   border: none;
   cursor: pointer;
