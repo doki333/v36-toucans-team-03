@@ -5,6 +5,10 @@
   box-sizing: border-box;
 }
 
+html {
+  font-family: "Poppins", sans-serif;
+}
+
 body {
   background-color: #294b57 !important;
   padding: 20px;
@@ -265,6 +269,7 @@ body {
 /* =======MapStyle============= */
 body {
   margin: 0;
+  padding: 0;
 }
 #map {
   position: absolute;
@@ -274,18 +279,113 @@ body {
   width: 80vw;
   border: solid;
   border-color: #19d3ab;
-  z-index: 1;
 }
 
-#instructions {
+/* =======Map Style No Margin======== */
+
+#map {
   position: absolute;
-  margin: 20px;
-  width: 25%;
-  top: 20%;
-  bottom: 20%;
-  padding: 20px;
-  background-color: #fff;
-  overflow-y: scroll;
-  font-family: sans-serif;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  border: none;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.header {
+  margin: 0rem 1rem;
+  position: absolute;
+  right: 0;
   z-index: 10;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 24rem;
+  height: 30rem;
+  margin: 1rem;
+}
+
+.searchbox {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.entered-location,
+.search {
+  height: 2rem;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  border-radius: 100px;
+}
+
+.entered-location {
+  width: 20rem;
+  padding: 0.5rem 1rem;
+}
+
+.search {
+  background-color: #19d3ab;
+  padding: 0rem 1rem;
+}
+
+.stations {
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  overflow-y: scroll;
+  z-index: 10;
+}
+
+.station-info {
+  padding: 1rem;
+  border-bottom: 1px solid #294b57;
+}
+
+.station-title {
+  font-size: 1.2rem;
+  line-height: 1.05;
+}
+
+.distance {
+  font-size: 0.9rem;
+  color: #4d4d4d;
+}
+
+.instructions {
+  display: none;
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  overflow-y: scroll;
+  z-index: 10;
+}
+
+.instructions.active {
+  display: block;
+}
+
+.instructions p {
+  font-weight: 600;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  background-color: #d3f1eb;
+}
+
+.instructions ol li {
+  padding-left: 1rem;
+  margin-bottom: 1rem;
 }

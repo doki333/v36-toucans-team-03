@@ -67,19 +67,22 @@ exampdddddddddle@abc.com</textarea
       </div>
     </div>
     <!--------Search Bar--------->
-    <div class="user-location">
-      <form>
+    <div class="navigation">
+      <div class="searchbox">
         <input
           type="text"
-          id="user-location"
+          id="entered-location"
+          class="entered-location"
           placeholder="123 Lincoln St ..."
         />
-        <button class="submit">Search</button>
-      </form>
+        <button class="search">Go</button>
+      </div>
+      <div class="stations" id="stations"></div>
+      <div class="instructions" id="instructions"></div>
     </div>
     <!-------Map------->
     <div id="map"></div>
-    <div id="instructions"></div>
+
     <script src="js/map.js"></script>
   </body>
 </html>

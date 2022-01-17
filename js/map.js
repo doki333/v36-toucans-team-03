@@ -19,7 +19,7 @@ editBtn.addEventListener("click", () => {
   editBtn.classList.toggle("editing");
 });
 // Map Location
-openchargermap_accessToken = "ba0bdea1-7220-4e1c-a3e1-60deca08d26a";
+openchargemap_accessToken = "ba0bdea1-7220-4e1c-a3e1-60deca08d26a";
 mapboxgl.accessToken =
   "pk.eyJ1Ijoic2FzaGFwb28iLCJhIjoiY2t5Z2p4MDRxMDllMjJwb2x3Z2p3eWlzNCJ9.ZpZ5fmYIFxhljKiga7DSXw";
 
@@ -99,9 +99,9 @@ async function getRoute(end) {
   for (const step of steps) {
     tripInstructions += `<li>${step.maneuver.instruction}</li>`;
   }
-  instructions.innerHTML = `<p><strong>Trip duration: ${Math.floor(
+  instructions.innerHTML = `<p>Trip duration: ${Math.floor(
     data.duration / 60
-  )} min </strong></p><ol>${tripInstructions}</ol>`;
+  )} min </p><ol>${tripInstructions}</ol>`;
 }
 
 // Argument: the json file fetched from Open Charger Map
@@ -114,35 +114,47 @@ function drawStations(json) {
   }
 
   // Add new search
+  let uniqueTitles = [];
+  const stations = document.getElementById("stations");
+  let stationList = "";
   for (const i in json) {
     const loc = json[i];
-    const coord = [loc.AddressInfo.Longitude, loc.AddressInfo.Latitude];
-    map.addLayer({
-      id: "station" + i,
-      type: "circle",
-      source: {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: [
-            {
-              type: "Feature",
-              properties: {},
-              geometry: {
-                type: "Point",
-                coordinates: coord,
+    const title = loc.AddressInfo.Title;
+    if (!uniqueTitles.includes(title)) {
+      uniqueTitles.push(title);
+      const coord = [loc.AddressInfo.Longitude, loc.AddressInfo.Latitude];
+      map.addLayer({
+        id: "station" + i,
+        type: "circle",
+        source: {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: [
+              {
+                type: "Feature",
+                properties: {},
+                geometry: {
+                  type: "Point",
+                  coordinates: coord,
+                },
               },
-            },
-          ],
+            ],
+          },
         },
-      },
-      paint: {
-        // TODO: Style of the marker?
-        "circle-radius": 10,
-        "circle-color": "#f30",
-      },
-    });
+        paint: {
+          // TODO: Style of the marker?
+          "circle-radius": 10,
+          "circle-color": "#f30",
+        },
+      });
+      const dist = loc.AddressInfo.Distance;
+      stationList += `<div class="station-info"><p class="station-title">${title}</p><p class="distance">${
+        Math.round(dist * 10) / 10
+      } miles</p></div>`;
+    }
   }
+  stations.innerHTML = `${stationList}`;
 }
 
 // Argument: parsed location entered by user, number of stations to return
@@ -203,7 +215,7 @@ async function getStations(loc, numResult = 10) {
   }
 
   const stationQuery = await fetch(
-    `https://api.openchargemap.io/v3/poi/?key=${openchargermap_accessToken}&output=json&latitude=${userLocation[1]}&longitude=${userLocation[0]}&maxresults=${numResult}`
+    `https://api.openchargemap.io/v3/poi/?key=${openchargemap_accessToken}&output=json&latitude=${userLocation[1]}&longitude=${userLocation[0]}&maxresults=${numResult}`
   );
 
   // the json file should contain num_result objects
@@ -214,11 +226,10 @@ async function getStations(loc, numResult = 10) {
 const search = function (event) {
   event.preventDefault();
   let loc = document
-    .getElementById("user-location")
+    .getElementById("entered-location")
     .value.trimStart()
     .trimEnd();
   loc = loc.replaceAll(" ", "%20");
-  console.log(loc);
   getStations(loc);
 };
 
@@ -303,9 +314,9 @@ map.on("load", () => {
     getRoute(coords);
   });
 });
-const onSubmit = document.querySelector(".submit");
+const onSearch = document.querySelector(".search");
 
-onSubmit.addEventListener("click", search);
+onSearch.addEventListener("click", search);
 
 // NavigationControl/Direction
 
