@@ -25,6 +25,7 @@ mapboxgl.accessToken =
 
 // An arbitrary starting point, will be change to user's location later
 let userLocation = [-122.662323, 45.523751];
+let stationJson = {};
 
 // Ask for user's current location
 navigator.geolocation.getCurrentPosition(
@@ -101,7 +102,7 @@ async function getRoute(end) {
   }
   instructions.innerHTML = `<p>Trip duration: ${Math.floor(
     data.duration / 60
-  )} min </p><ol>${tripInstructions}</ol>`;
+  )} min <a href="#" class="close-instructions" onclick="closeInstructions()">&times;</a></p><ol>${tripInstructions}</ol>`;
 }
 
 // Argument: the json file fetched from Open Charger Map
@@ -148,10 +149,24 @@ function drawStations(json) {
           "circle-color": "#f30",
         },
       });
-      const dist = loc.AddressInfo.Distance;
-      stationList += `<div class="station-info"><p class="station-title">${title}</p><p class="distance">${
-        Math.round(dist * 10) / 10
-      } miles</p></div>`;
+      let dist = loc.AddressInfo.Distance; // TODO: Looks like the distance retrieved from Open Charge Map is the straight line distance not distance of the route
+      if (loc.AddressInfo.DistanceUnit == 2) {
+        dist = Math.round((dist / 1.609) * 10) / 10;
+      } else {
+        dist = Math.round(dist * 10) / 10;
+      }
+      let connectionList = ``;
+      const connections = loc.Connections;
+
+      // TODO: Validation, values might be null or Unknown
+      for (const j in connections) {
+        const connection = connections[j];
+        connectionList += `<ul class="connection-info station-content" data-index=${i}><li class="station-content" data-index=${i}>${connection.ConnectionType.Title}</li><li class="station-content" data-index=${i}>${connection.PowerKW} kW</li><li class="station-content" data-index=${i}>Qty: ${connection.Quantity}</li></ul>`;
+      }
+      stationList +=
+        `<div class="station station-content" data-index=${i}><p class="station-title station-content" data-index=${i}>${title}</p><div class="station-info station-content" data-index=${i}><p class="distance station-content" data-index=${i}>${dist} miles</p><div class="connection-wrapper station-content" data-index=${i}>` +
+        connectionList +
+        `</div></div></div>`;
     }
   }
   stations.innerHTML = `${stationList}`;
@@ -219,7 +234,7 @@ async function getStations(loc, numResult = 10) {
   );
 
   // the json file should contain num_result objects
-  const stationJson = await stationQuery.json();
+  stationJson = await stationQuery.json();
   drawStations(stationJson);
 }
 
@@ -314,9 +329,31 @@ map.on("load", () => {
     getRoute(coords);
   });
 });
-const onSearch = document.querySelector(".search");
 
+const onSearch = document.querySelector(".search");
 onSearch.addEventListener("click", search);
+
+// TODO: Optimize
+document.addEventListener("click", function (event) {
+  if (event.target.classList.contains("station-content")) {
+    const i = event.target.getAttribute("data-index");
+    const loc = stationJson[i];
+    const coord = [loc.AddressInfo.Longitude, loc.AddressInfo.Latitude];
+    getRoute(coord);
+    const stations = document.querySelector(".stations");
+    stations.classList.toggle("hide");
+    const instructions = document.querySelector(".instructions");
+    instructions.classList.toggle("active");
+  }
+});
+
+const closeInstructions = function () {
+  console.log("close");
+  const stations = document.querySelector(".stations");
+  stations.classList.toggle("hide");
+  const instructions = document.querySelector(".instructions");
+  instructions.classList.toggle("active");
+};
 
 // NavigationControl/Direction
 

@@ -7,11 +7,13 @@
 
 html {
   font-family: "Poppins", sans-serif;
+  height: 100vh;
 }
 
 body {
   background-color: #294b57 !important;
-  padding: 20px;
+  /* padding: 20px; */
+  height: 100%;
 }
 
 .header {
@@ -267,19 +269,6 @@ body {
   color: tomato;
 }
 /* =======MapStyle============= */
-body {
-  margin: 0;
-  padding: 0;
-}
-#map {
-  position: absolute;
-  top: 10%;
-  left: 10%;
-  height: 80vh;
-  width: 80vw;
-  border: solid;
-  border-color: #19d3ab;
-}
 
 /* =======Map Style No Margin======== */
 
@@ -296,7 +285,7 @@ body {
 }
 
 .header {
-  margin: 0rem 1rem;
+  margin: 1rem 1rem;
   position: absolute;
   right: 0;
   z-index: 10;
@@ -307,8 +296,9 @@ body {
   flex-direction: column;
   gap: 0.5rem;
   width: 24rem;
-  height: 30rem;
-  margin: 1rem;
+  padding-top: 1rem;
+  padding-left: 1rem;
+  height: inherit;
 }
 
 .searchbox {
@@ -316,6 +306,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 0.5rem;
   z-index: 10;
 }
 
@@ -337,6 +328,7 @@ body {
 .search {
   background-color: #19d3ab;
   padding: 0rem 1rem;
+  cursor: pointer;
 }
 
 .stations {
@@ -348,19 +340,47 @@ body {
   z-index: 10;
 }
 
-.station-info {
-  padding: 1rem;
+.station {
   border-bottom: 1px solid #294b57;
+  cursor: pointer;
+}
+
+.station:hover {
+  background-color: #d3f1eb;
 }
 
 .station-title {
   font-size: 1.2rem;
   line-height: 1.05;
+  padding: 0.7rem 0.7rem 0rem 0.7rem;
+}
+
+.station-info {
+  padding: 0rem 0.7rem;
+  margin-bottom: 0.5rem;
+}
+
+.station-info ul li:not(:first-child) {
+  color: #4d4d4d;
+  font-size: 0.8rem;
 }
 
 .distance {
   font-size: 0.9rem;
   color: #4d4d4d;
+}
+
+.connection-wrapper {
+  font-size: 0.9rem;
+  width: 100%;
+  line-height: 1.2;
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+}
+
+.connection-info {
+  list-style-type: none;
 }
 
 .instructions {
@@ -383,9 +403,14 @@ body {
   padding: 0.5rem;
   margin-bottom: 1rem;
   background-color: #d3f1eb;
+  flex-grow: 1;
 }
 
 .instructions ol li {
   padding-left: 1rem;
   margin-bottom: 1rem;
+}
+
+.hide {
+  display: none;
 }
