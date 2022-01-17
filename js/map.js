@@ -239,13 +239,15 @@ async function getStations(loc, numResult = 10) {
 }
 
 const search = function (event) {
-  event.preventDefault();
   let loc = document
     .getElementById("entered-location")
     .value.trimStart()
     .trimEnd();
-  loc = loc.replaceAll(" ", "%20");
-  getStations(loc);
+  if (loc !== "") {
+    event.preventDefault();
+    loc = loc.replaceAll(" ", "%20");
+    getStations(loc);
+  }
 };
 
 map.on("load", () => {
@@ -331,7 +333,16 @@ map.on("load", () => {
 });
 
 const onSearch = document.querySelector(".search");
+const onSearchInput = document.getElementById("entered-location");
+
 onSearch.addEventListener("click", search);
+onSearchInput.addEventListener("keydown", (event) => {
+  let key = event.key || event.keyCode;
+
+  if (key === "Enter" || key === 13) {
+    search();
+  }
+});
 
 // TODO: Optimize
 document.addEventListener("click", function (event) {
