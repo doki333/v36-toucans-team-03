@@ -10,6 +10,7 @@ const signInCancel = document.querySelector(".signIn_cancel");
 const signUpInput = document.querySelectorAll(".signUp_input");
 const signInInput = document.querySelectorAll(".signIn_input");
 
+// Sign Up/Sing in Main page
 signUpBtn.addEventListener("click", () => {
   signUpModal.classList.add("active");
 });
