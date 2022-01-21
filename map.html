@@ -52,7 +52,6 @@
                 placeholder="Username"
                 disabled
               />
-              <button type="button" class="edit_btn"></button>
             </div>
             <label for="profile_email" class="profile_label">📧Email📧</label>
             <textarea name="profile_email" id="profile_email" disabled rows="2">
@@ -75,14 +74,23 @@ exampdddddddddle@abc.com</textarea
           class="entered-location"
           placeholder="123 Lincoln St ..."
         />
-        <button class="search">Go</button>
+        <button type="button" class="search">Go</button>
       </div>
       <div class="stations" id="stations"></div>
       <div class="instructions" id="instructions"></div>
     </div>
     <!-------Map------->
     <div id="map"></div>
-
+<!-------Floating menu------->
+<nav>
+  <div class="navicon">
+    <div></div>
+  </div>
+<a>Dining</a>
+  <a>Grocery</a>
+  <a>Medical</a>
+  <a>Information</a>
+</nav>
     <script src="js/map.js"></script>
   </body>
 </html>

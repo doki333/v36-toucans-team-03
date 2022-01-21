@@ -1,6 +1,5 @@
 const profileBtn = document.querySelector(".profile_info");
 const closeBtn = document.querySelector(".close_btn");
-const editBtn = document.querySelector(".edit_btn");
 const profileUsername = document.querySelector("#profile_username");
 const profileModal = document.querySelector(".profile_modal");
 
@@ -11,13 +10,8 @@ profileBtn.addEventListener("click", () => {
 closeBtn.addEventListener("click", () => {
   profileModal.classList.remove("active");
   profileUsername.disabled = true;
-  editBtn.classList.remove("editing");
 });
 
-editBtn.addEventListener("click", () => {
-  profileUsername.toggleAttribute("disabled");
-  editBtn.classList.toggle("editing");
-});
 // Map Location
 openchargemap_accessToken = "ba0bdea1-7220-4e1c-a3e1-60deca08d26a";
 mapboxgl.accessToken =
@@ -238,13 +232,15 @@ async function getStations(loc, numResult = 10) {
   drawStations(stationJson);
 }
 
-const search = function (event) {
-  event.preventDefault();
+const search = function () {
   let loc = document
     .getElementById("entered-location")
     .value.trimStart()
     .trimEnd();
   loc = loc.replaceAll(" ", "%20");
+  if (loc === "") {
+    return;
+  }
   getStations(loc);
 };
 
@@ -330,8 +326,19 @@ map.on("load", () => {
   });
 });
 
+const onPressEnter = (event) => {
+  let key = event.key || event.keyCode;
+
+  if (key === "Enter" || key === 13) {
+    search();
+  }
+};
+
 const onSearch = document.querySelector(".search");
+const onSearchInput = document.getElementById("entered-location");
+
 onSearch.addEventListener("click", search);
+onSearchInput.addEventListener("keydown", onPressEnter);
 
 // TODO: Optimize
 document.addEventListener("click", function (event) {
