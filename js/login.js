@@ -32,7 +32,7 @@ const updateUI = async () => {
     //if user is authenticated, hide the logo page and let map be revealed
     logoPage.classList.add("hide");
     profileSection.classList.remove("hide");
-    navigationSection.classList.remove("hide");
+    navigationSection.style.display = "block";
     floating.classList.remove("hide");
     mapSection.classList.remove("hide");
 
@@ -46,7 +46,6 @@ const updateUI = async () => {
   } else {
     logoPage.classList.remove("hide");
     profileSection.classList.add("hide");
-    navigationSection.classList.add("hide");
     floating.classList.add("hide");
     mapSection.classList.add("hide");
   }
