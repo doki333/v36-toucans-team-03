@@ -26,7 +26,8 @@ const updateUI = async () => {
     document.querySelector(".page_wrapper").classList.add("hide");
     document.querySelector(".header").classList.remove("hide");
     document.querySelector(".navigation").classList.remove("hide");
-    document.querySelector(".map").classList.remove("hide");
+    document.querySelector(".menu").classList.remove("hide");
+    document.querySelector("#map").classList.remove("hide");
     // document.getElementById("ipt-access-token").innerHTML =
     //   await auth0.getTokenSilently();
     // document.getElementById("ipt-user-profile").innerHTML = JSON.stringify(
@@ -40,6 +41,7 @@ const updateUI = async () => {
     document.querySelector(".page_wrapper").classList.remove("hide");
     document.querySelector(".header").classList.add("hide");
     document.querySelector(".navigation").classList.add("hide");
+    document.querySelector(".menu").classList.add("hide");
     document.querySelector("#map").className = "hide";
   }
 };

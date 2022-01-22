@@ -9,7 +9,6 @@ profileBtn.addEventListener("click", () => {
 
 closeBtn.addEventListener("click", () => {
   profileModal.classList.remove("active");
-  profileUsername.disabled = true;
 });
 
 // Map Location
