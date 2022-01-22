@@ -9,7 +9,9 @@ body {
 }
 .page_wrapper {
   width: 100%;
+  padding-top: 80px;
 }
+
 /* ======logo===== */
 .square_logo {
   display: none;
@@ -23,7 +25,6 @@ body {
   font-size: 140px;
   font-weight: 600;
   line-height: 170px;
-  margin-top: 80px;
   text-align: center;
 }
 
@@ -109,7 +110,7 @@ body {
   text-align: center;
 }
 
-.btn_wrapper .signUp_btn {
+.btn_wrapper .start_btn {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   background-color: #294b57;
@@ -121,7 +122,6 @@ body {
   height: 60px;
   width: 150px;
   font-weight: 700;
-  margin-right: 40px;
   padding: 0.7rem 2rem;
   text-align: center;
   text-decoration: none;
@@ -132,37 +132,7 @@ body {
     -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
 }
 
-.btn_wrapper .signUp_btn:hover {
-  -webkit-transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
-  transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
-  background-color: #19d3ab;
-  color: #294b57;
-}
-
-.btn_wrapper .signIn_btn {
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  background-color: #294b57;
-  border-radius: 3rem;
-  border: 0.3rem solid #19d3ab;
-  color: #19d3ab;
-  font-family: "Poppins", sans-serif;
-  font-size: 18px;
-  height: 60px;
-  width: 150px;
-  font-weight: 700;
-  margin-left: 40px;
-  padding: 0.7rem 2rem;
-  text-align: center;
-  text-decoration: none;
-  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-  transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95),
-    -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-}
-
-.btn_wrapper .signIn_btn:hover {
+.btn_wrapper .start_btn:hover {
   -webkit-transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
   transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
   background-color: #19d3ab;

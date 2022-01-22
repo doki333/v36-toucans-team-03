@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/map.css" />
     <link rel="stylesheet" href="styles/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,9 +16,31 @@
       href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
       rel="stylesheet"
     />
+    <!-------MAPBOX------->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css"
+      type="text/css"
+    />
+    <!-------ProfileLogo------->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee+Outline&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
     <title>Charging U App</title>
   </head>
   <body>
+    <!-------ProfileModal------->
     <div class="page_wrapper">
       <img
         src="./image/logo.png"
@@ -30,89 +53,59 @@
         U
       </p>
       <div class="btn_wrapper">
-        <button type="button" class="signUp_btn">Sign Up</button>
-        <button type="button" class="signIn_btn">Sign In</button>
+        <button type="button" class="start_btn">Start</button>
       </div>
-      <div class="signUp_modal">
-        <div class="form_wrapper">
-          <form method="post" action="#" class="signUp_form">
-            <p class="signUp_text">Sign Up</p>
-            <div class="form_content">
-              <label for="name" class="signUp_label">Name</label>
-              <input
-                name="name"
-                type="text"
-                id="name"
-                class="signUp_input"
-                placeholder="Username"
-                required
-              />
-              <small></small>
-            </div>
-            <div class="form_content">
-              <label for="email" class="signUp_label">Email</label>
-              <input
-                name="email"
-                type="email"
-                id="email"
-                class="signUp_input"
-                placeholder="Email"
-                required
-              />
-              <small></small>
-            </div>
-            <div class="form_content">
-              <label for="password" class="signUp_label">Password</label>
-              <input
-                name="password"
-                type="password"
-                id="password"
-                class="signUp_input"
-                placeholder="Password"
-                required
-              />
-              <small></small>
-            </div>
-            <div class="signUp_btns">
-              <input type="submit" class="signUp_btn" value="Submit" />
-              <input type="button" class="signUp_cancel" value="Cancel" />
-            </div>
-          </form>
-        </div>
+    </div>
+    <div class="mapPage_wrapper">
+      <div class="header">
+        <button type="button" class="profile_info">
+          <div class="info_inner"></div>
+        </button>
       </div>
-      <div class="signIn_modal">
-        <div class="form_wrapper">
-          <form action="" class="signIn_form" name="signInForm">
-            <p class="signIn_text">Sign In</p>
-            <div class="form_content">
-              <label for="email" class="signIn_label">Email</label>
-              <input
-                name="email"
-                type="email"
-                id="email"
-                class="signIn_input"
-                required
-              />
+      <div class="profile_modal">
+        <div class="modal_wrapper">
+          <div class="modal_dash">
+            <div class="profile_info2">
+              <div class="info_inner2"></div>
             </div>
-            <div class="form_content">
-              <label for="password" class="signIn_label">Password</label>
-              <input
-                name="password"
-                type="password"
-                id="password"
-                class="signIn_input"
-                required
-              />
+            <div class="username_section">
+              <p id="profile_username">Username</p>
             </div>
-            <div class="signIn_btns">
-              <a href="map.html" class="signIn_btn">Sign In</a>
-              <button type="button" class="signIn_cancel">Cancel</button>
+            <div class="profile_btns">
+              <button type="button" class="signOut_btn">Sign Out</button>
+              <button type="button" class="close_btn">Cancel</button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
-    <script src="js/script.js"></script>
-    <script src="js/modal.js"></script>
+    <!--------Search Bar--------->
+    <div class="navigation">
+      <div class="searchbox">
+        <input
+          type="text"
+          id="entered-location"
+          class="entered-location"
+          placeholder="123 Lincoln St ..."
+        />
+        <button type="button" class="search">Go</button>
+      </div>
+      <div class="stations" id="stations"></div>
+      <div class="instructions" id="instructions"></div>
+    </div>
+    <!-------Map------->
+    <div id="map"></div>
+    <!-------Floating menu------->
+    <nav class="hide">
+      <div class="navicon">
+        <div></div>
+      </div>
+      <a>Dining</a>
+      <a>Grocery</a>
+      <a>Medical</a>
+      <a>Information</a>
+    </nav>
+    <script src="js/map.js"></script>
+    <script src="js/login.js"></script>
   </body>
 </html>
