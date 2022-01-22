@@ -40,7 +40,7 @@ const updateUI = async () => {
     document.querySelector(".page_wrapper").classList.remove("hide");
     document.querySelector(".header").classList.add("hide");
     document.querySelector(".navigation").classList.add("hide");
-    document.querySelector(".map").classList.add("hide");
+    document.querySelector(".map").className = "hide";
   }
 };
 window.onload = async () => {
