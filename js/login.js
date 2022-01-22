@@ -1,12 +1,8 @@
-const logoPage = document.querySelector(".page_wrapper").classList.add("hide");
-const profileSection = document
-  .querySelector(".header")
-  .classList.remove("hide");
-const navigationSection = document
-  .querySelector(".navigation")
-  .classList.remove("hide");
-const floating = document.querySelector(".menu").classList.remove("hide");
-const mapSection = document.querySelector("#map").classList.remove("hide");
+const logoPage = document.querySelector(".page_wrapper");
+const profileSection = document.querySelector(".header");
+const navigationSection = document.querySelector(".navigation");
+const floating = document.querySelector(".menu");
+const mapSection = document.querySelector("#map");
 
 let auth0 = null;
 
