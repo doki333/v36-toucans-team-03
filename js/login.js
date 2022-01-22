@@ -1,3 +1,13 @@
+const logoPage = document.querySelector(".page_wrapper").classList.add("hide");
+const profileSection = document
+  .querySelector(".header")
+  .classList.remove("hide");
+const navigationSection = document
+  .querySelector(".navigation")
+  .classList.remove("hide");
+const floating = document.querySelector(".menu").classList.remove("hide");
+const mapSection = document.querySelector("#map").classList.remove("hide");
+
 let auth0 = null;
 
 const configureClient = async () => {
@@ -23,27 +33,26 @@ const updateUI = async () => {
   document.getElementsByClassName("signOut_btn").disabled = !isAuthenticated;
   // NEW - add logic to show/hide gated content after authenticationnnn
   if (isAuthenticated) {
-    document.querySelector(".page_wrapper").classList.add("hide");
-    document.querySelector(".header").classList.remove("hide");
-    document.querySelector(".navigation").classList.remove("hide");
-    document.querySelector(".menu").classList.remove("hide");
-    document.querySelector("#map").classList.remove("hide");
-    // document.getElementById("ipt-access-token").innerHTML =
-    //   await auth0.getTokenSilently();
-    // document.getElementById("ipt-user-profile").innerHTML = JSON.stringify(
-    //   await auth0.getUser()
-    // );
+    //if user is authenticated, hide the logo page and let map be revealed
+    logoPage.classList.add("hide");
+    profileSection.classList.remove("hide");
+    navigationSection.classList.remove("hide");
+    floating.classList.remove("hide");
+    mapSection.classList.remove("hide");
+
+    //  UserInfo
     const userInfo = await auth0.getUser();
     document.querySelector(
       "#profile_username"
     ).innerText = `${userInfo.nickname}`;
     document.querySelector("#profile_email").value = `${userInfo.email}`;
+    document.querySelector("#user_photo").src = `${userInfo.picture}`;
   } else {
-    document.querySelector(".page_wrapper").classList.remove("hide");
-    document.querySelector(".header").classList.add("hide");
-    document.querySelector(".navigation").classList.add("hide");
-    document.querySelector(".menu").classList.add("hide");
-    document.querySelector("#map").className = "hide";
+    logoPage.classList.remove("hide");
+    profileSection.classList.add("hide");
+    navigationSection.classList.add("hide");
+    floating.classList.add("hide");
+    mapSection.classList.add("hide");
   }
 };
 window.onload = async () => {
