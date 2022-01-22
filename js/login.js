@@ -37,6 +37,7 @@ const updateUI = async () => {
     document.querySelector(
       "#profile_username"
     ).innerText = `${userInfo.nickname}`;
+    document.querySelector("#profile_email").value = `${userInfo.email}`;
   } else {
     document.querySelector(".page_wrapper").classList.remove("hide");
     document.querySelector(".header").classList.add("hide");
