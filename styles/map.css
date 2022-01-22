@@ -437,16 +437,17 @@ body {
 }
 /* =======Floating menu======== */
 
-nav {
+.menu {
   width: 150px;
   background: #19d3ab;
   -webkit-clip-path: circle(24px at 30px 24px);
   clip-path: circle(24px at 32px 24px);
   -webkit-transition: -webkit-clip-path 0.5625s, clip-path 0.375s;
   transition: -webkit-clip-path 0.5625s, clip-path 0.375s;
+  z-index: 10;
 }
 
-nav:hover {
+.menu:hover {
   -webkit-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
   -webkit-transition-duration: 0.75s;
@@ -466,9 +467,13 @@ a {
   user-select: none;
 }
 
-a:hover { background: #294b57; }
+a:hover {
+  background: #294b57;
+}
 
-a:active { background: #294b57; }
+a:active {
+  background: #294b57;
+}
 
 .navicon {
   padding: 23px 20px;
@@ -495,6 +500,10 @@ a:active { background: #294b57; }
   position: absolute;
 }
 
-.navicon div:before { top: -7px; }
+.navicon div:before {
+  top: -7px;
+}
 
-.navicon div:after { top: 7px; }
+.navicon div:after {
+  top: 7px;
+}
