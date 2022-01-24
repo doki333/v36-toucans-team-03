@@ -35,7 +35,7 @@ const updateUI = async () => {
     navigationSection.classList.remove("hide");
     floating.classList.remove("hide");
     mapSection.classList.remove("hide");
-    navigationSection.style.display = "block";
+    navigationSection.style.display = "flex";
 
     //  UserInfo
     const userInfo = await auth0.getUser();
