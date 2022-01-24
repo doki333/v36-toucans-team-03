@@ -351,7 +351,8 @@ document.addEventListener("click", function (event) {
     stations.classList.toggle("hide");
     const instructions = document.querySelector(".instructions");
     instructions.classList.toggle("active");
-    if (isVisible === "none") {
+    const isNone = map.getLayoutProperty("route", "visibility");
+    if (isNone === "none") {
       map.setLayoutProperty("route", "visibility", "visible");
     }
   }
