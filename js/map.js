@@ -77,6 +77,7 @@ async function getRoute(end) {
       layout: {
         "line-join": "round",
         "line-cap": "round",
+        visibility: "visible",
       },
       paint: {
         "line-color": "#3887be",
@@ -350,6 +351,9 @@ document.addEventListener("click", function (event) {
     stations.classList.toggle("hide");
     const instructions = document.querySelector(".instructions");
     instructions.classList.toggle("active");
+    if (isVisible === "none") {
+      map.setLayoutProperty("route", "visibility", "visible");
+    }
   }
 });
 
@@ -359,8 +363,9 @@ const closeInstructions = function () {
   stations.classList.toggle("hide");
   const instructions = document.querySelector(".instructions");
   instructions.classList.toggle("active");
-  if (map.getSource("route")) {
-    map.removeSource("route");
+  const isVisible = map.getLayoutProperty("route", "visibility");
+  if (isVisible === "visible") {
+    map.setLayoutProperty("route", "visibility", "none");
   }
 };
 
