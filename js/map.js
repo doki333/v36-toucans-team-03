@@ -360,7 +360,7 @@ const closeInstructions = function () {
   const instructions = document.querySelector(".instructions");
   instructions.classList.toggle("active");
   if (map.getSource("route")) {
-    removeSource("route");
+    map.removeSource("route");
   }
 };
 
