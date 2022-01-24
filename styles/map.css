@@ -373,6 +373,9 @@ body {
     height: inherit;
     display: none;
   }
+  .entered-location {
+    width: 12rem;
+  }
   .profile_info {
     width: 35px;
     height: 35px;
@@ -427,22 +430,24 @@ body {
   clip-path: circle(390px at 150px 24px);
 }
 
-a {
+.menu a {
   display: block;
   line-height: 50px;
   padding: 0 20px;
   cursor: pointer;
+  text-decoration: none;
+  color: #294b57;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
 }
 
-a:hover {
+.menu a:hover {
   background: #294b57;
 }
 
-a:active {
+.menu a:active {
   background: #294b57;
 }
 

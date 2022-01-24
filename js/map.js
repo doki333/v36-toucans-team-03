@@ -359,6 +359,7 @@ const closeInstructions = function () {
   stations.classList.toggle("hide");
   const instructions = document.querySelector(".instructions");
   instructions.classList.toggle("active");
+  map.removeLayer("route");
 };
 
 // NavigationControl/Direction

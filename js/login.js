@@ -14,12 +14,12 @@ const configureClient = async () => {
 };
 
 const processLoginState = async () => {
-  // Check code and state parameterss
+  // Check code and state parameters
   const query = window.location.search;
   if (query.includes("code=") && query.includes("state=")) {
     // Process the login state
     await auth0.handleRedirectCallback();
-    // Use replaceState to redirect the user away and remove the querystring parameterss
+    // Use replaceState to redirect the user away and remove the querystring parameters
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 };
@@ -27,7 +27,7 @@ const processLoginState = async () => {
 const updateUI = async () => {
   const isAuthenticated = await auth0.isAuthenticated();
   document.getElementsByClassName("signOut_btn").disabled = !isAuthenticated;
-  // NEW - add logic to show/hide gated content after authenticationnnn
+  // NEW - add logic to show/hide gated content after authentication
   if (isAuthenticated) {
     //if user is authenticated, hide the logo page and let map be revealed
     logoPage.classList.add("hide");
