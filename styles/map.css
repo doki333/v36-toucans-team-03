@@ -472,7 +472,7 @@ body {
   content: "";
   width: 20px;
   height: 2px;
-  background: black (0, 0, 0, 0.87);
+  background: rgba(0, 0, 0, 0.87);
   position: absolute;
 }
 
