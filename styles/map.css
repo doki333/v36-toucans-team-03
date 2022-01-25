@@ -444,11 +444,11 @@ body {
 }
 
 .menu a:hover {
-  background: black;
+  background: rgb(200, 214, 240);
 }
 
 .menu a:active {
-  background: #a5bfc9;
+  background: black;
 }
 
 .navicon {
