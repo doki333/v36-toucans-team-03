@@ -448,7 +448,7 @@ body {
 }
 
 .menu a:active {
-  background: black;
+  background: rgb(200, 214, 240);
 }
 
 .navicon {
