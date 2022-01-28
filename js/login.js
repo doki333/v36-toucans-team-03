@@ -50,6 +50,7 @@ const updateUI = async () => {
     navigationSection.classList.add("hide");
     floating.classList.add("hide");
     mapSection.classList.add("hide");
+    navigationSection.style.display = "none";
   }
 };
 window.onload = async () => {

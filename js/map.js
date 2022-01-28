@@ -96,7 +96,17 @@ async function getRoute(end) {
   }
   instructions.innerHTML = `<p>Trip duration: ${Math.floor(
     data.duration / 60
-  )} min <a href="#" class="close-instructions" onclick="closeInstructions()">&times;</a></p><ol>${tripInstructions}</ol>`;
+  )} min <a href="#" class="close-instructions" onclick="closeInstructions()">&times;</a><button type="button" class="bm_btn" lng=${
+    end[0]
+  } lat=${end[1]}>☆</button></p><ol>${tripInstructions}</ol>`;
+  if (localStorage.getItem("@locationBM")) {
+    const isBookmarked = JSON.parse(localStorage.getItem("@locationBM"));
+    for (let l of isBookmarked) {
+      if (l.location[0] === end[0] && l.location[1] === end[1]) {
+        document.querySelector(".bm_btn").innerText = "★";
+      }
+    }
+  }
 }
 
 // Argument: the json file fetched from Open Charger Map
@@ -242,6 +252,13 @@ const search = function () {
     return;
   }
   getStations(loc);
+  if (
+    document.querySelector("#station-bookmark").classList.contains("active")
+  ) {
+    document.querySelector("#station-bookmark").classList.remove("active");
+    const stations = document.querySelector(".stations");
+    stations.classList.toggle("hide");
+  }
 };
 
 map.on("load", () => {
@@ -340,6 +357,29 @@ const onSearchInput = document.getElementById("entered-location");
 onSearch.addEventListener("click", search);
 onSearchInput.addEventListener("keydown", onPressEnter);
 
+document.querySelector(".station-list").addEventListener("click", () => {
+  const bookmark_list = JSON.parse(localStorage.getItem("@locationBM"));
+  const stations = document.querySelector(".stations");
+  stations.classList.toggle("hide");
+  const instructions = document.querySelector(".instructions");
+  instructions.classList.toggle("hide");
+  const bM = document.querySelector(".station-bookmark");
+  bM.classList.toggle("active");
+  if (bookmark_list) {
+    bM.innerHTML = "";
+    for (list of bookmark_list) {
+      bM.innerHTML += `
+      <ul>
+        <li class="bookmark_thing" title=${list.title}>${list.title}<p style="color: #19d3ab; display: inline">★</p></li>
+      </ul>`;
+    }
+  } else if (!bookmark_list) {
+    bM.innerHTML += `
+    <ul>
+      <li>Nothing!</li>
+    </ul>`;
+  }
+});
 // TODO: Optimize
 document.addEventListener("click", function (event) {
   if (event.target.classList.contains("station-content")) {
@@ -356,6 +396,30 @@ document.addEventListener("click", function (event) {
       map.setLayoutProperty("route", "visibility", "visible");
     }
   }
+  if (event.target.classList.contains("bm_btn")) {
+    document.querySelector(".bookmark_modal").classList.add("active");
+    const long = Number(event.target.getAttribute("lng"));
+    const lati = Number(event.target.getAttribute("lat"));
+    document.querySelector(".add_btn").setAttribute("long", long);
+    document.querySelector(".add_btn").setAttribute("lati", lati);
+  }
+  if (event.target.classList.contains("bookmark_thing")) {
+    const storageList = JSON.parse(localStorage.getItem("@locationBM"));
+    const name = event.target.getAttribute("title");
+    for (let s of storageList) {
+      if (s.title === name) {
+        getRoute(s.location);
+        const stations = document.querySelector(".stations");
+        stations.classList.toggle("hide");
+        const instructions = document.querySelector(".instructions");
+        instructions.classList.toggle("active");
+        const isNone = map.getLayoutProperty("route", "visibility");
+        if (isNone === "none") {
+          map.setLayoutProperty("route", "visibility", "visible");
+        }
+      }
+    }
+  }
 });
 
 const closeInstructions = function () {
@@ -369,6 +433,37 @@ const closeInstructions = function () {
     map.setLayoutProperty("route", "visibility", "none");
   }
 };
+
+document.querySelector(".close_button").addEventListener("click", () => {
+  document.querySelector(".bookmark_modal").classList.remove("active");
+  document.querySelector(".bookmark_control").value = "";
+});
+
+document.querySelector(".add_btn").addEventListener("click", (event) => {
+  const long = Number(event.target.getAttribute("long"));
+  const lati = Number(event.target.getAttribute("lati"));
+  let isEmpty = JSON.parse(localStorage.getItem("@locationBM"));
+  if (isEmpty === null) {
+    isEmpty = [];
+    const title = document.querySelector(".bookmark_control").value;
+    const location_number = [long, lati];
+    const entry = {
+      title: title,
+      location: location_number,
+    };
+    isEmpty.push(entry);
+    localStorage.setItem("@locationBM", JSON.stringify(isEmpty));
+  } else if (isEmpty !== null) {
+    isEmpty.push({
+      title: document.querySelector(".bookmark_control").value,
+      location: [long, lati],
+    });
+    localStorage.setItem("@locationBM", JSON.stringify(isEmpty));
+  }
+  document.querySelector(".bookmark_modal").classList.remove("active");
+  document.querySelector(".bookmark_control").value = "";
+  document.querySelector(".bm_btn").innerText = "★";
+});
 
 // NavigationControl/Direction/ Bookmark
 
@@ -412,20 +507,20 @@ function createBookmark(e) {
   // add a new bookmark to the bookmarks
 
   fetch(`${apiURL}/${url}?app_id=${appID}`)
-    .then(response => response.json())
-    .then(data => {
+    .then((response) => response.json())
+    .then((data) => {
       const title = bookmarkInput.value;
       const bookmark = {
         title: data.hybridGraph.title,
         image: data.hybridGraph.image,
-        link: data.hybridGraph.url
+        link: data.hybridGraph.url,
       };
       bookmarks.push(bookmark);
       fillList(bookmarks);
       storeBookmarks(bookmarks);
       bookmarkForm.reset();
     })
-    .catch(error => {
+    .catch((error) => {
       alert(
         'There was a problem retrieving the information. Please try again. Make sure to include the "http://"'
       );

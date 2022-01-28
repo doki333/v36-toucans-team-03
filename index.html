@@ -41,7 +41,7 @@
   </head>
   <body>
     <!-------ProfileModal------->
-    <div class="page_wrapper">
+    <!-- <div class="page_wrapper">
       <img
         src="./image/logo.png"
         alt="logo image"
@@ -55,7 +55,7 @@
       <div class="btn_wrapper">
         <button type="button" class="start_btn">Start</button>
       </div>
-    </div>
+    </div> -->
     <div class="mapPage_wrapper">
       <div class="header">
         <button type="button" class="profile_info">
@@ -94,6 +94,7 @@ exampdddddddddle@abc.com</textarea
       </div>
       <div class="stations" id="stations"></div>
       <div class="instructions" id="instructions"></div>
+      <div class="station-bookmark" id="station-bookmark"></div>
       <!-------Floating menu------->
       <nav class="menu">
         <div class="navicon">
@@ -102,28 +103,61 @@ exampdddddddddle@abc.com</textarea
         <a href="https://www.yelp.com/" target="_blank">Dining</a>
         <a href="https://www.walmart.com/" target="_blank">Grocery</a>
         <a href="https://www.walgreens.com/" target="_blank">Medical</a>
-        <a href="https://github.com/chingu-voyages/v36-toucans-team-03" target="_blank">Information</a>
+        <a
+          href="https://github.com/chingu-voyages/v36-toucans-team-03"
+          target="_blank"
+          >Information</a
+        >
+        <a class="station-list">Bookmark</a>
       </nav>
     </div>
+    <!-------Bookmark form------->
+    <!-- <div class="bookmark_modal">
+      <form class="location_form">
+        <div class="form_title">
+          Bookmark
+          <button class="close_button" type="button">x</button>
+        </div>
+        <div class="form_middle">
+          <input
+            type="text"
+            class="bookmark_control"
+            placeholder="What do you want to save?"
+          />
+        </div>
+        <div class="form_bottom">
+          <button type="button" class="btn btn-primary btn-sm add_btn">
+            Add <i class="fa fa-plus-circle" aria-hidden="true"></i>
+          </button>
+        </div>
+      </form>
+    </div> -->
     <div class="overlay"></div>
-<!-------Bookmark form------->
-<div class="floater content">
-  <form class="bookmark-form">
-    <div class="floater-top">
-      <input type="text" class="form-control" placeholder="What do you want to save?">
-    </div>
-    <div class="floater-bottom">
-      <button type="submit" class="btn btn-primary btn-sm">Add <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
-    </div>
-  </form>
-</div>
 
-<div class="bookmarks-list content"></div>
-<script src="https://use.fontawesome.com/532236494c.js"></script>
+    <div class="floater content">
+      <form class="bookmark-form">
+        <div class="floater-top">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="What do you want to save?"
+          />
+        </div>
+        <div class="floater-bottom">
+          <button type="submit" class="btn btn-primary btn-sm">
+            Add <i class="fa fa-plus-circle" aria-hidden="true"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="bookmarks-list content"></div>
+
+    <script src="https://use.fontawesome.com/532236494c.js"></script>
     <!-------Map------->
     <div id="map"></div>
     <script src="https://cdn.auth0.com/js/auth0-spa-js/1.19/auth0-spa-js.production.js"></script>
     <script src="js/map.js"></script>
-    <script src="js/login.js"></script>
+    <!-- <script src="js/login.js"></script> -->
   </body>
 </html>

@@ -362,16 +362,24 @@ body {
   display: none;
 }
 
+.station-bookmark {
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  overflow-y: scroll;
+  z-index: 10;
+  display: none;
+}
+
 @media only screen and (min-width: 200px) and (max-width: 790px) {
   .navigation {
-    display: flex;
     flex-direction: column;
     gap: 0.5rem;
     width: 12rem;
     padding-top: 1rem;
     padding-left: 1rem;
     height: inherit;
-    display: none;
   }
   .entered-location {
     width: 12rem;
@@ -484,6 +492,100 @@ body {
   top: 7px;
 }
 
+/************** bookmark *************/
+
+.bm_btn {
+  float: right;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  line-height: 15px;
+  border-radius: 50%;
+  border: none;
+  color: #19d3ab;
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+  transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95),
+    -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+}
+
+.location_form {
+  background: #ffffff;
+  border-radius: 5px;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.4) all;
+  z-index: 11;
+  margin: 0 auto;
+  position: relative;
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 450px;
+  transform: translate(0, 150%);
+}
+
+.form_title {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.location_form input[type="text"] {
+  padding: 30px 20px;
+  border: none;
+  box-shadow: none;
+  font-size: 14px;
+  width: 100%;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.4) all;
+}
+.location_form input[type="text"]:focus {
+  outline: none;
+}
+
+.form_bottom {
+  padding: 6px 10px 7px;
+  text-align: right;
+  border-top: 1px solid #ddd;
+}
+.form_bottom button {
+  padding: 5px 15px;
+  font-size: 12px;
+  background-color: #162f3b;
+  border: none;
+  color: white;
+}
+
+.close_button {
+  background: transparent;
+  float: right;
+  font-size: 18px;
+  border: none;
+}
+
+.bookmark_modal {
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow: auto;
+  top: 0;
+  left: 0;
+  text-align: left;
+  z-index: 20;
+}
+
+.station-bookmark li {
+  font-size: 1rem;
+  line-height: 1.05;
+  padding: 0.7rem;
+  border-bottom: 1px solid #294b57;
+}
+
+.bookmark_thing {
+  cursor: pointer;
+}
 .content {
   margin: 0 auto;
   position: relative;
@@ -496,65 +598,77 @@ body {
   background: #ffffff;
   border-radius: 5px;
   margin-bottom: 30px;
-  ;
   transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.4) all;
   z-index: 11;
 }
 
-.floater input[type=text] {
+.floater input[type="text"] {
   padding: 30px 20px;
   border: none;
   box-shadow: none;
   font-size: 14px;
+  width: 100%;
   transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.4) all;
+}
+
+.floater input[type="text"]:focus {
+  outline: none;
 }
 
 .floater-bottom {
   padding: 6px 10px 7px;
   text-align: right;
-  border-top: 1px solid #DDD;
+  border-top: 1px solid #ddd;
 }
 
 .floater-bottom button {
-  padding: 4px 8px;
+  padding: 5px 15px;
   font-size: 12px;
-  background-color: #162F3B;
+  background-color: #162f3b;
   border: none;
+  color: white;
 }
 
 .floater-bottom:hover button {
-  background: #162F3B;
+  background: #162f3b;
   text-decoration: none;
 }
 
 .overlay {
-  position: fixed;
-  left: 0;
-  top: 0;
-  background: rgba(0, 0, 0, 0.75);
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
-  opacity: 0;
+  position: absolute;
+  overflow: auto;
+  top: 0;
+  left: 0;
+  z-index: 20;
   transition: 0.3s ease opacity;
-  z-index: 10;
   pointer-events: none;
 }
 
-body.show-floater .floater {
+.close_button {
+  background: transparent;
+  float: right;
+  font-size: 18px;
+  border: none;
+}
+
+.show-floater .floater {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
 
-body.show-floater .floater input[type=text] {
+.show-floater .floater input[type="text"] {
   padding: 50px 20px;
   font-size: 18px;
 }
 
-body.show-floater .overlay {
+.show-floater .overlay {
   opacity: 1;
   pointer-events: all;
 }
-
 
 /*Bookmark List*/
 
@@ -577,7 +691,7 @@ body.show-floater .overlay {
 }
 
 .bookmark:hover {
-  color: #36656F;
+  color: #36656f;
   text-decoration: none;
 }
 
