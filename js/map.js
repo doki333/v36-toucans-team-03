@@ -13,7 +13,7 @@ closeBtn.addEventListener("click", () => {
 
 // Map Location
 let openchargemap_accessToken = "ba0bdea1-7220-4e1c-a3e1-60deca08d26a";
-let mapboxgl.accessToken =
+let mapboxgl_accessToken =
   "pk.eyJ1Ijoic2FzaGFwb28iLCJhIjoiY2t5Z2p4MDRxMDllMjJwb2x3Z2p3eWlzNCJ9.ZpZ5fmYIFxhljKiga7DSXw";
 
 // An arbitrary starting point, will be change to user's location later
@@ -43,7 +43,7 @@ async function getRoute(end) {
   // an arbitrary start will always be the same
   // only the end or destination will change
   const query = await fetch(
-    `https://api.mapbox.com/directions/v5/mapbox/driving/${userLocation[0]},${userLocation[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
+    `https://api.mapbox.com/directions/v5/mapbox/driving/${userLocation[0]},${userLocation[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl_accessToken}`,
     { method: "GET" }
   );
   // extract the json body content
@@ -181,7 +181,7 @@ function drawStations(json) {
 async function getStations(loc, numResult = 10) {
   // Convert the user entered location to coordinates
   const coordQuery = await fetch(
-    `https://api.mapbox.com/geocoding/v5/mapbox.places/${loc}.json?access_token=${mapboxgl.accessToken}`,
+    `https://api.mapbox.com/geocoding/v5/mapbox.places/${loc}.json?access_token=${mapboxgl_accessToken}`,
     { method: "GET" }
   );
   const coordJson = await coordQuery.json();
