@@ -38,6 +38,20 @@ const map = new mapboxgl.Map({
   zoom: 12,
 });
 
+map.addControl(
+  new mapboxgl.GeolocateControl({
+    positionOptions: {
+      enableHighAccuracy: false,
+    },
+    showAccuracyCircle: false,
+    // When active the map will receive updates to the device's location as it changes.
+    trackUserLocation: true,
+    // Draw an arrow next to the location dot to indicate which direction the device is heading.
+    showUserHeading: true,
+  }),
+  "bottom-right"
+);
+
 async function getRoute(end) {
   // make a directions request using driving profile
   // an arbitrary start will always be the same
