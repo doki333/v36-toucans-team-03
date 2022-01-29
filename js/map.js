@@ -12,8 +12,8 @@ closeBtn.addEventListener("click", () => {
 });
 
 // Map Location
-openchargemap_accessToken = "ba0bdea1-7220-4e1c-a3e1-60deca08d26a";
-mapboxgl.accessToken =
+let openchargemap_accessToken = "ba0bdea1-7220-4e1c-a3e1-60deca08d26a";
+let mapboxgl.accessToken =
   "pk.eyJ1Ijoic2FzaGFwb28iLCJhIjoiY2t5Z2p4MDRxMDllMjJwb2x3Z2p3eWlzNCJ9.ZpZ5fmYIFxhljKiga7DSXw";
 
 // An arbitrary starting point, will be change to user's location later
