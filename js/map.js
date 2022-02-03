@@ -171,7 +171,6 @@ async function getDetail(i) {
   }
 
   if (json.AddressInfo.ContactTelephone1 != null) {
-    console.log(json.AddressInfo.ContactTelephone1);
     stationInfo += `<p class="station-card-number">${json.AddressInfo.ContactTelephone1}</p>`;
   }
   if (
@@ -200,6 +199,11 @@ async function getDetail(i) {
 
   stationInfo += connectionList;
   stationCard.innerHTML = stationInfo;
+
+  //Add marker
+  new mapboxgl.Marker()
+    .setLngLat([json.AddressInfo.Longitude, json.AddressInfo.Latitude])
+    .addTo(map);
 }
 
 // Argument: the json file fetched from Open Charger Map
@@ -343,7 +347,7 @@ async function getStations(loc, numResult = 10) {
   drawStations(stationJson);
 }
 
-const search = function () {
+const search = async function () {
   let loc = document
     .getElementById("entered-location")
     .value.trimStart()
@@ -352,7 +356,7 @@ const search = function () {
   if (loc === "") {
     return;
   }
-  getStations(loc);
+  await getStations(loc);
 
   if (
     document.querySelector("#station-bookmark").classList.contains("active")
@@ -370,6 +374,23 @@ const search = function () {
   if (document.querySelector(".instructions").classList.contains("active")) {
     const instructions = document.querySelector(".instructions");
     instructions.classList.toggle("active");
+  }
+  //add point-click event
+  for (let s = 0; s <= 10; s++) {
+    if (map.getLayer("station" + s)) {
+      map.on("click", `station${s}`, (e) => {
+        const clickedLngLat = e.lngLat;
+        getRoute([clickedLngLat.lng, clickedLngLat.lat]);
+        const isNone = map.getLayoutProperty("route", "visibility");
+        if (isNone === "none") {
+          map.setLayoutProperty("route", "visibility", "visible");
+        }
+        const stations = document.querySelector(".stations");
+        stations.classList.toggle("hide");
+        const instructions = document.querySelector(".instructions");
+        instructions.classList.toggle("active");
+      });
+    }
   }
 };
 
@@ -403,55 +424,6 @@ map.on("load", () => {
       "circle-radius": 10,
       "circle-color": "#3887be",
     },
-  });
-
-  // allow the user to click the map and update the location of the destination
-  map.on("click", (event) => {
-    // get the coordinates where the mouse clicked
-    const coords = Object.keys(event.lngLat).map((key) => event.lngLat[key]);
-    const end = {
-      type: "FeatureCollection",
-      features: [
-        {
-          type: "Feature",
-          properties: {},
-          geometry: {
-            type: "Point",
-            coordinates: coords,
-          },
-        },
-      ],
-    };
-    if (map.getLayer("end")) {
-      map.getSource("end").setData(end);
-    } else {
-      map.addLayer({
-        id: "end",
-        type: "circle",
-        source: {
-          type: "geojson",
-          data: {
-            type: "FeatureCollection",
-            features: [
-              {
-                type: "Feature",
-                properties: {},
-                geometry: {
-                  type: "Point",
-                  coordinates: coords,
-                },
-              },
-            ],
-          },
-        },
-        paint: {
-          // TODO: Style
-          "circle-radius": 10,
-          "circle-color": "#f30",
-        },
-      });
-    }
-    getRoute(coords);
   });
 });
 
@@ -536,7 +508,6 @@ document.addEventListener("click", function (event) {
 });
 
 const closeInstructions = function () {
-  console.log("close");
   const stations = document.querySelector(".stations");
   stations.classList.toggle("hide");
   const instructions = document.querySelector(".instructions");
@@ -548,7 +519,6 @@ const closeInstructions = function () {
 };
 
 const closeDetail = function () {
-  console.log("close");
   const stations = document.querySelector(".stations");
   stations.classList.toggle("hide");
   const card = document.querySelector(".station-card");
@@ -557,6 +527,11 @@ const closeDetail = function () {
   if (isVisible === "visible") {
     map.setLayoutProperty("route", "visibility", "none");
   }
+
+  const oneMarker = document.querySelectorAll(".mapboxgl-marker");
+  oneMarker.forEach((m) => {
+    m.remove();
+  });
 };
 
 document.addEventListener("click", function (event) {
@@ -567,7 +542,6 @@ document.addEventListener("click", function (event) {
     stations.classList.toggle("hide");
     const card = document.querySelector(".station-card");
     card.classList.toggle("active");
-    console.log(card);
   }
 });
 

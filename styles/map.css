@@ -20,39 +20,6 @@ body {
   float: right;
 }
 
-.profile_info {
-  width: 40px;
-  height: 40px;
-  background-color: #294b57;
-  border-radius: 50%;
-  border: 3px solid #19d3ab;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.info_inner {
-  width: 15px;
-  height: 15px;
-  content: "";
-  background-color: #19d3ab;
-  margin: 0 auto;
-  border-radius: 50%;
-  display: block;
-  position: relative;
-  top: -5px;
-}
-.info_inner::after {
-  width: 60px;
-  height: 60px;
-  content: "";
-  background-color: #19d3ab;
-  position: relative;
-  top: 20px;
-  left: -22px;
-  display: block;
-  border-radius: 50%;
-}
-
 .profile_modal {
   display: none;
   background-color: rgba(0, 0, 0, 0.5);
@@ -289,7 +256,6 @@ body {
 
 .station {
   border-bottom: 1px solid #294b57;
-  cursor: pointer;
 }
 
 .station:hover {
@@ -420,58 +386,13 @@ body {
   display: none;
 }
 
-@media only screen and (min-width: 200px) and (max-width: 790px) {
-  .navigation {
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 12rem;
-    padding-top: 1rem;
-    padding-left: 1rem;
-    height: inherit;
-  }
-  .entered-location {
-    width: 12rem;
-  }
-  .profile_info {
-    width: 35px;
-    height: 35px;
-    background-color: #294b57;
-    border-radius: 50%;
-    border: 3px solid #19d3ab;
-    overflow: hidden;
-    cursor: pointer;
-  }
-
-  .info_inner {
-    width: 10px;
-    height: 10px;
-    content: "";
-    background-color: #19d3ab;
-    margin: 0 auto;
-    border-radius: 50%;
-    display: block;
-    position: relative;
-    top: -5px;
-  }
-  .info_inner::after {
-    width: 30px;
-    height: 30px;
-    content: "";
-    background-color: #19d3ab;
-    position: relative;
-    top: 14px;
-    left: -10px;
-    display: block;
-    border-radius: 50%;
-  }
-}
 /* =======Floating menu======== */
 
 .menu {
   width: 150px;
   background: #19d3ab;
-  -webkit-clip-path: circle(24px at 30px 24px);
-  clip-path: circle(24px at 32px 24px);
+  -webkit-clip-path: circle(24px at 120px 25px);
+  clip-path: circle(24px at 125px 25px);
   -webkit-transition: -webkit-clip-path 0.5625s, clip-path 0.375s;
   transition: -webkit-clip-path 0.5625s, clip-path 0.375s;
   z-index: 10;
@@ -508,7 +429,7 @@ body {
 }
 
 .navicon {
-  padding: 23px 20px;
+  padding: 15px 20px;
   cursor: pointer;
   -webkit-transform-origin: 32px 24px;
   -ms-transform-origin: 32px 24px;
@@ -522,24 +443,63 @@ body {
   background: black (0, 0, 0, 0.87);
 }
 
-.navicon div:before,
-.navicon div:after {
-  display: block;
+.navicon:before {
+  width: 15px;
+  height: 15px;
   content: "";
-  width: 20px;
-  height: 2px;
-  background: rgba(0, 0, 0, 0.87);
-  position: absolute;
+  background-color: #162f3b;
+  border-radius: 50%;
+  display: block;
+  position: relative;
+  z-index: 10;
+  float: right;
+  right: -3px;
+  top: -3px;
 }
 
-.navicon div:before {
-  top: -7px;
+.navicon:after {
+  width: 40px;
+  height: 20px;
+  content: "";
+  background-color: #162f3b;
+  position: relative;
+  top: 15px;
+  left: 86px;
+  display: block;
+  border-radius: 30px 30px 0 0;
+  z-index: 10;
 }
+@media only screen and (min-width: 200px) and (max-width: 790px) {
+  .navigation {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 12rem;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    height: inherit;
+  }
+  .entered-location {
+    width: 12rem;
+  }
+  .menu {
+    width: 100px;
+    z-index: 10;
+    -webkit-clip-path: circle(24px at 76px 24px);
+    clip-path: circle(24px at 76px 24px);
+  }
 
-.navicon div:after {
-  top: 7px;
+  .menu a {
+    font-size: 0.8rem;
+    line-height: 40px;
+  }
+
+  .navicon:after {
+    width: 30px;
+    height: 15px;
+    left: 41px;
+    border-radius: 22.5px 22.5px 0 0;
+  }
 }
-
 /************** bookmark *************/
 
 .bm_btn {
