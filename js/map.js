@@ -110,7 +110,7 @@ async function getRoute(end) {
   }
   instructions.innerHTML = `<p>Trip duration: ${Math.floor(
     data.duration / 60
-  )} min <a href="#" class="close-instructions" onclick="closeInstructions()">&times;</a><button type="button" class="bm_btn" lng=${
+  )} min <a href="#" class="close-instructions" onclick="closeInstructions()">&hookleftarrow;</a><button type="button" class="bm_btn" lng=${
     end[0]
   } lat=${end[1]}>☆</button></p><ol>${tripInstructions}</ol>`;
   if (localStorage.getItem("@locationBM")) {
@@ -123,12 +123,93 @@ async function getRoute(end) {
   }
 }
 
+async function getDetail(i) {
+  const json = stationJson[i];
+  console.log(json);
+  // choose the best route
+
+  const stationCard = document.getElementById("station-card");
+
+  let stationInfo = "";
+
+  let title = json.AddressInfo.Title;
+  if (json.OperatorInfo != null && json.OperatorInfo.Title != null) {
+    title = json.OperatorInfo.Title;
+  }
+  if (title.indexOf("(") > 0) {
+    title = title.substring(0, title.indexOf("(")).trimEnd();
+  }
+  stationInfo += `<p class="station-card-title">${title} <a href="#" class="close-detail" onclick="closeDetail()">&hookleftarrow;</a></p>`;
+
+  let usageType = "";
+  if (json.UsageType != null) {
+    if (json.UsageType.Title != null) {
+      usageType += json.UsageType.Title;
+    }
+  }
+  if (usageType != "") {
+    usageType = `<p class="station-card-usage-type">` + usageType + "</p>";
+    stationInfo += usageType;
+  }
+
+  let address = "";
+  if (json.AddressInfo.AddressLine1 != null) {
+    address += `${json.AddressInfo.AddressLine1}`;
+    if (json.AddressInfo.Town != null) {
+      address += `, ${json.AddressInfo.Town}`;
+    }
+    if (json.AddressInfo.StateOrProvince != null) {
+      address += `, ${json.AddressInfo.StateOrProvince}`;
+    }
+    if (json.AddressInfo.Postcode != null) {
+      address += ` ${json.AddressInfo.Postcode}`;
+    }
+  }
+  if (address != "") {
+    address = `<p class="station-card-address">` + address + "</p>";
+    stationInfo += address;
+  }
+
+  if (json.AddressInfo.ContactTelephone1 != null) {
+    console.log(json.AddressInfo.ContactTelephone1);
+    stationInfo += `<p class="station-card-number">${json.AddressInfo.ContactTelephone1}</p>`;
+  }
+  if (
+    json.AddressInfo.ContactTelephone1 == null &&
+    json.AddressInfo.ContactTelephone2 != null
+  ) {
+    stationInfo += `<p class="station-card-number">${json.AddressInfo.ContactTelephone2}</p>`;
+  }
+
+  if (json.AddressInfo.RelatedURL != null) {
+    stationInfo += `<p class="station-card-website"><a class="station-card-website-link" href="${json.AddressInfo.RelatedURL}">${json.AddressInfo.RelatedURL}</a></p>`;
+  }
+
+  let connectionList = ``;
+  const connections = json.Connections;
+
+  // TODO: Validation, values might be null or Unknown
+  for (const j in connections) {
+    const connection = connections[j];
+    connectionList += `<ul class="connection-info"><li>${connection.ConnectionType.Title}</li><li>${connection.PowerKW} kW</li><li>Qty: ${connection.Quantity}</li></ul>`;
+  }
+  connectionList =
+    `<div class="station-card-connection connection-wrapper">` +
+    connectionList +
+    `</div>`;
+
+  stationInfo += connectionList;
+  stationCard.innerHTML = stationInfo;
+}
+
 // Argument: the json file fetched from Open Charger Map
 function drawStations(json) {
   // Remove previous search
   let counter = 0;
-  while (map.getLayer("station" + counter)) {
-    map.removeLayer("station" + counter).removeSource("station" + counter);
+  while (counter <= 10) {
+    if (map.getLayer("station" + counter)) {
+      map.removeLayer("station" + counter).removeSource("station" + counter);
+    }
     counter++;
   }
 
@@ -138,7 +219,13 @@ function drawStations(json) {
   let stationList = "";
   for (const i in json) {
     const loc = json[i];
-    const title = loc.AddressInfo.Title;
+    let title = loc.AddressInfo.Title;
+    if (loc.OperatorInfo != null && loc.OperatorInfo.Title != null) {
+      title = loc.OperatorInfo.Title;
+    }
+    if (title.indexOf("(") > 0) {
+      title = title.substring(0, title.indexOf("(")).trimEnd();
+    }
     if (!uniqueTitles.includes(title)) {
       uniqueTitles.push(title);
       const coord = [loc.AddressInfo.Longitude, loc.AddressInfo.Latitude];
@@ -179,10 +266,10 @@ function drawStations(json) {
       // TODO: Validation, values might be null or Unknown
       for (const j in connections) {
         const connection = connections[j];
-        connectionList += `<ul class="connection-info station-content" data-index=${i}><li class="station-content" data-index=${i}>${connection.ConnectionType.Title}</li><li class="station-content" data-index=${i}>${connection.PowerKW} kW</li><li class="station-content" data-index=${i}>Qty: ${connection.Quantity}</li></ul>`;
+        connectionList += `<ul class="connection-info"><li>${connection.ConnectionType.Title}</li><li>${connection.PowerKW} kW</li><li>Qty: ${connection.Quantity}</li></ul>`;
       }
       stationList +=
-        `<div class="station station-content" data-index=${i}><p class="station-title station-content" data-index=${i}>${title}</p><div class="station-info station-content" data-index=${i}><p class="distance station-content" data-index=${i}>${dist} miles</p><div class="connection-wrapper station-content" data-index=${i}>` +
+        `<div class="station"><div class="station-header"><p class="station-title">${title}</p><div class="station-buttons"><button class="station-detail station-button station-content" data-index=${i}>Info</button><button class="station-nav station-button station-content" data-index=${i}>Nav</button></div></div><div class="station-info"><p class="distance">${dist} miles</p><div class="connection-wrapper">` +
         connectionList +
         `</div></div></div>`;
     }
@@ -266,12 +353,23 @@ const search = function () {
     return;
   }
   getStations(loc);
+
   if (
     document.querySelector("#station-bookmark").classList.contains("active")
   ) {
     document.querySelector("#station-bookmark").classList.remove("active");
+  }
+  if (document.querySelector(".stations").classList.contains("hide")) {
     const stations = document.querySelector(".stations");
     stations.classList.toggle("hide");
+  }
+  if (document.querySelector(".station-card").classList.contains("active")) {
+    const stationCard = document.querySelector(".station-card");
+    stationCard.classList.toggle("active");
+  }
+  if (document.querySelector(".instructions").classList.contains("active")) {
+    const instructions = document.querySelector(".instructions");
+    instructions.classList.toggle("active");
   }
 };
 
@@ -371,33 +469,33 @@ const onSearchInput = document.getElementById("entered-location");
 onSearch.addEventListener("click", search);
 onSearchInput.addEventListener("keydown", onPressEnter);
 
-document.querySelector(".station-list").addEventListener("click", () => {
-  const bookmark_list = JSON.parse(localStorage.getItem("@locationBM"));
-  const stations = document.querySelector(".stations");
-  stations.classList.toggle("hide");
-  const instructions = document.querySelector(".instructions");
-  instructions.classList.toggle("hide");
-  const bM = document.querySelector(".station-bookmark");
-  bM.classList.toggle("active");
-  console.log(bookmark_list);
-  if (bookmark_list) {
-    bM.innerHTML = "";
-    for (list of bookmark_list) {
-      bM.innerHTML += `
-      <ul>
-        <li class="bookmark_thing" title=${list.title}>${list.title}<p style="color: #19d3ab; display: inline">★</p></li>
-      </ul>`;
-    }
-  } else if (!bookmark_list) {
-    bM.innerHTML += `
-    <ul>
-      <li>Nothing!</li>
-    </ul>`;
-  }
-});
+// document.querySelector(".station-list").addEventListener("click", () => {
+//   const bookmark_list = JSON.parse(localStorage.getItem("@locationBM"));
+//   const stations = document.querySelector(".stations");
+//   stations.classList.toggle("hide");
+//   const instructions = document.querySelector(".instructions");
+//   instructions.classList.toggle("hide");
+//   const bM = document.querySelector(".station-bookmark");
+//   bM.classList.toggle("active");
+//   console.log(bookmark_list);
+//   if (bookmark_list) {
+//     bM.innerHTML = "";
+//     for (list of bookmark_list) {
+//       bM.innerHTML += `
+//       <ul>
+//         <li class="bookmark_thing" title=${list.title}>${list.title}<p style="color: #19d3ab; display: inline">★</p></li>
+//       </ul>`;
+//     }
+//   } else if (!bookmark_list) {
+//     bM.innerHTML += `
+//     <ul>
+//       <li>Nothing!</li>
+//     </ul>`;
+//   }
+// });
 // TODO: Optimize
 document.addEventListener("click", function (event) {
-  if (event.target.classList.contains("station-content")) {
+  if (event.target.classList.contains("station-nav")) {
     const i = event.target.getAttribute("data-index");
     const loc = stationJson[i];
     const coord = [loc.AddressInfo.Longitude, loc.AddressInfo.Latitude];
@@ -448,6 +546,30 @@ const closeInstructions = function () {
     map.setLayoutProperty("route", "visibility", "none");
   }
 };
+
+const closeDetail = function () {
+  console.log("close");
+  const stations = document.querySelector(".stations");
+  stations.classList.toggle("hide");
+  const card = document.querySelector(".station-card");
+  card.classList.toggle("active");
+  const isVisible = map.getLayoutProperty("route", "visibility");
+  if (isVisible === "visible") {
+    map.setLayoutProperty("route", "visibility", "none");
+  }
+};
+
+document.addEventListener("click", function (event) {
+  if (event.target.classList.contains("station-detail")) {
+    const i = event.target.getAttribute("data-index");
+    getDetail(i);
+    const stations = document.querySelector(".stations");
+    stations.classList.toggle("hide");
+    const card = document.querySelector(".station-card");
+    card.classList.toggle("active");
+    console.log(card);
+  }
+});
 
 document.querySelector(".close_button").addEventListener("click", () => {
   document.querySelector(".bookmark_modal").classList.remove("active");
