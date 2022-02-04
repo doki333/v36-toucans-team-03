@@ -264,8 +264,8 @@ async function getRoute(end) {
       visibility: "visible",
     };
     const paint = {
-      "line-color": "#3887be",
-      "line-width": 5,
+      "line-color": "#D21941",
+      "line-width": 6,
       "line-opacity": 0.75,
     };
     addMapLayer("route", "line", geojson, paint, layout);
@@ -430,7 +430,7 @@ function drawStations(json) {
       const paint = {
         // TODO: Style of the marker?
         "circle-radius": 10,
-        "circle-color": "#f30",
+        "circle-color": "#19D3AB",
       };
       addMapLayer("station" + i, "circle", geojson, paint);
 
@@ -526,7 +526,7 @@ async function getStations(loc, numResult = 10) {
     const paint = {
       // TODO: Style
       "circle-radius": 10,
-      "circle-color": "#3887be",
+      "circle-color": "#19D3AB",
     };
     addMapLayer("point", "circle", geojson, paint);
   }
@@ -619,7 +619,7 @@ map.on("load", () => {
   const paint = {
     // TODO: Style
     "circle-radius": 10,
-    "circle-color": "#3887be",
+    "circle-color": "#D21941",
   };
   addMapLayer("point", "circle", geojson, paint);
 });
