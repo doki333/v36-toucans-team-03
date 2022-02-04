@@ -179,34 +179,6 @@ body {
   color: tomato;
 }
 
-#currentBtn {
-  background-color: #effbff;
-  z-index: 10;
-  width: 19rem;
-  height: 2rem;
-  font-family: "Poppins", sans-serif;
-  font-size: 1rem;
-  border: none;
-  outline: none;
-  border-radius: 100px;
-  position: relative;
-  top: 33px;
-  cursor: pointer;
-  transition: all 1s ease;
-}
-
-#currentBtn:hover {
-  background-color: #19d3ab;
-}
-
-.btn_area {
-  height: 4rem;
-  z-index: 9;
-  position: relative;
-  top: -40px;
-  display: none;
-}
-
 /* =======MapStyle============= */
 
 /* =======Map Style No Margin======== */

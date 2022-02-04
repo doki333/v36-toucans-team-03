@@ -60,20 +60,6 @@ function askLocation() {
   );
 }
 
-//Add mouse-enter and mouse-leave event
-//Todo: It's not working on mobile screen except click event. We have to think of it for user's better experience
-onSearchInput.addEventListener("mouseenter", () => {
-  askBtnArea.style.display = "block";
-  locationBtn.style.display = "block";
-});
-askBtnArea.addEventListener("mouseleave", () => {
-  askBtnArea.style.display = "none";
-});
-locationBtn.addEventListener("click", () => {
-  askLocation();
-  locationBtn.style.display = "none";
-});
-
 /*====================Utilities: Construct HTML elements/*====================*/
 
 /**
@@ -553,6 +539,7 @@ const search = async function () {
 
   // TODO: location validation
   if (loc === "") {
+    askLocation();
     return;
   }
   await getStations(loc);
@@ -636,6 +623,13 @@ const onSearch = document.querySelector(".search");
 
 onSearch.addEventListener("click", search);
 onSearchInput.addEventListener("keydown", onPressEnter);
+onSearchInput.addEventListener("keyup", () => {
+  if (onSearchInput.value.trimStart().trimEnd() === "") {
+    onSearch.innerText = "📍";
+  } else {
+    onSearch.innerText = "Go";
+  }
+});
 
 // document.querySelector(".station-list").addEventListener("click", () => {
 //   const bookmark_list = JSON.parse(localStorage.getItem("@locationBM"));
