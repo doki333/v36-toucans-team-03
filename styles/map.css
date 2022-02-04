@@ -16,10 +16,6 @@ body {
   height: 100%;
 }
 
-.header {
-  float: right;
-}
-
 .profile_modal {
   display: none;
   background-color: rgba(0, 0, 0, 0.5);
@@ -228,7 +224,8 @@ body {
 }
 
 .header {
-  margin: 1rem 1rem;
+  float: right;
+  margin: 1rem 0.5rem;
   position: absolute;
   right: 0;
   z-index: 10;
@@ -420,8 +417,8 @@ body {
 .menu {
   width: 150px;
   background: #19d3ab;
-  -webkit-clip-path: circle(24px at 120px 25px);
-  clip-path: circle(24px at 125px 25px);
+  -webkit-clip-path: circle(20px at 120px 25px);
+  clip-path: circle(20px at 125px 25px);
   -webkit-transition: -webkit-clip-path 0.5625s, clip-path 0.375s;
   transition: -webkit-clip-path 0.5625s, clip-path 0.375s;
   z-index: 10;
@@ -482,7 +479,7 @@ body {
   position: relative;
   z-index: 10;
   float: right;
-  right: -3px;
+  right: -4px;
   top: -3px;
 }
 
@@ -511,22 +508,28 @@ body {
     width: 12rem;
   }
   .menu {
-    width: 100px;
+    width: 80px;
     z-index: 10;
-    -webkit-clip-path: circle(24px at 76px 24px);
-    clip-path: circle(24px at 76px 24px);
+    -webkit-clip-path: circle(16px at 55px 16px);
+    clip-path: circle(16px at 55px 16px);
   }
 
   .menu a {
     font-size: 0.8rem;
     line-height: 40px;
+    padding: 0 10px;
   }
 
   .navicon:after {
     width: 30px;
     height: 15px;
-    left: 41px;
+    left: 21px;
+    top: 6px;
     border-radius: 22.5px 22.5px 0 0;
+  }
+  .navicon:before {
+    top: -10px;
+    left: 3px;
   }
   #currentBtn {
     width: 12rem;
