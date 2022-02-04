@@ -2,6 +2,9 @@ const profileBtn = document.querySelector(".profile_info");
 const closeBtn = document.querySelector(".close_btn");
 const profileUsername = document.querySelector("#profile_username");
 const profileModal = document.querySelector(".profile_modal");
+const onSearchInput = document.getElementById("entered-location");
+const locationBtn = document.getElementById("currentBtn");
+const askBtnArea = document.querySelector(".btn_area");
 
 profileBtn.addEventListener("click", () => {
   profileModal.classList.add("active");
@@ -19,17 +22,6 @@ mapboxgl.accessToken =
 // An arbitrary starting point, will be change to user's location later
 let userLocation = [-122.662323, 45.523751];
 let stationJson = {};
-
-// Ask for user's current location
-navigator.geolocation.getCurrentPosition(
-  function (loc) {
-    userLocation = [loc.coords.longitude, loc.coords.latitude];
-    map.setCenter(userLocation);
-  },
-  function () {
-    alert("Could not get your location"); // TODO: What to do when user disable location
-  }
-);
 
 // Initialize a map object
 const map = new mapboxgl.Map({
@@ -52,6 +44,35 @@ map.addControl(
   }),
   "bottom-right"
 );
+
+//Add button that asks for user's current location
+function askLocation() {
+  navigator.geolocation.getCurrentPosition(
+    function (loc) {
+      userLocation = [loc.coords.longitude, loc.coords.latitude];
+      map.setCenter(userLocation);
+      //As soon as user presses the button, show stations around user's current location
+      getStations(userLocation);
+    },
+    function () {
+      alert("We could not get your location"); // TODO: What to do when user disable location
+    }
+  );
+}
+
+//Add mouse-enter and mouse-leave event
+//Todo: It's not working on mobile screen except click event. We have to think of it for user's better experience
+onSearchInput.addEventListener("mouseenter", () => {
+  askBtnArea.style.display = "block";
+  locationBtn.style.display = "block";
+});
+askBtnArea.addEventListener("mouseleave", () => {
+  askBtnArea.style.display = "none";
+});
+locationBtn.addEventListener("click", () => {
+  askLocation();
+  locationBtn.style.display = "none";
+});
 
 /*====================Utilities: Construct HTML elements/*====================*/
 
@@ -612,7 +633,6 @@ const onPressEnter = (event) => {
 };
 
 const onSearch = document.querySelector(".search");
-const onSearchInput = document.getElementById("entered-location");
 
 onSearch.addEventListener("click", search);
 onSearchInput.addEventListener("keydown", onPressEnter);
