@@ -31,6 +31,7 @@ navigator.geolocation.getCurrentPosition(
   }
 );
 
+// Initialize a map object
 const map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/mapbox/streets-v11",
@@ -52,10 +53,166 @@ map.addControl(
   "bottom-right"
 );
 
+/*====================Utilities: Construct HTML elements/*====================*/
+
+/**
+ * Construct a paragraph html element.
+ * @param {String} content Content of the html element.
+ * @param {String} classes Classes of the html element.
+ * @param {String} onClickFunction Callback function of the html element.
+ * @param {String} dataName Data name if there's data.
+ * @param {*} data Data of this element.
+ * @returns String, a paragraph html element.
+ */
+function makePElement(
+  content,
+  classes,
+  onClickFunction = null,
+  dataName = null,
+  data = null
+) {
+  let res = `<p class="${classes}"`;
+  if (onClickFunction != null) res += ` onclick="${onClickFunction}()"`;
+  if (dataName != null) res += ` ${dataName}=${data}`;
+  res += ">" + content + "</p>";
+  return res;
+}
+
+/**
+ * Construct a anchor html element.
+ * @param {String} content Content of the html element.
+ * @param {String} href Link of the html element.
+ * @param {String} classes Classes of the html element.
+ * @param {String} onClickFunction Callback function of the html element.
+ * @param {String} dataName Data name if there's data.
+ * @param {*} data Data of this element.
+ * @returns String, a anchor html element.
+ */
+function makeAElement(
+  content,
+  href,
+  classes,
+  onClickFunction = null,
+  dataName = null,
+  data = null
+) {
+  let res = `<a href="${href}" class="${classes}"`;
+  if (onClickFunction != null) res += ` onclick="${onClickFunction}()"`;
+  if (dataName != null) res += ` ${dataName}=${data}`;
+  res += ">" + content + "</a>";
+  return res;
+}
+
+/**
+ * Construct a unordered list element.
+ * @param {Array} liContent The list elements as an array.
+ * @param {String} classes Classes of the html element.
+ * @returns String, a unordered list html element.
+ */
+function makeUlElement(liContent, classes) {
+  let res = `<ul class="${classes}">`;
+  for (const i in liContent) {
+    const content = liContent[i];
+    res += `<li>${content}</li>`;
+  }
+  res += "</ul>";
+  return res;
+}
+
+/**
+ * Construct a division html element.
+ * @param {String} content Content of the html element.
+ * @param {String} classes Classes of the html element.
+ * @param {String} onClickFunction Callback function of the html element.
+ * @param {String} dataName Data name if there's data.
+ * @param {*} data Data of this element.
+ * @returns String, a division html element.
+ */
+function makeDivElement(
+  content,
+  classes,
+  onClickFunction = null,
+  dataName = null,
+  data = null
+) {
+  let res = `<div class="${classes}"`;
+  if (onClickFunction != null) res += ` onclick="${onClickFunction}()"`;
+  if (dataName != null) res += ` ${dataName}=${data}`;
+  res += ">" + content + "</div>";
+  return res;
+}
+
+/**
+ * Construct a button html element.
+ * @param {String} content Content of the html element.
+ * @param {String} classes Classes of the html element.
+ * @param {String} onClickFunction Callback function of the html element.
+ * @param {String} dataName Data name if there's data.
+ * @param {*} data Data of this element.
+ * @returns String, a button html element.
+ */
+function makeButtonElement(
+  content,
+  classes,
+  onClickFunction = null,
+  dataName = null,
+  data = null
+) {
+  let res = `<button class="${classes}"`;
+  if (onClickFunction != null) res += ` onclick="${onClickFunction}()"`;
+  if (dataName != null) res += ` ${dataName}=${data}`;
+  res += ">" + content + "</button>";
+  return res;
+}
+
+/**
+ *
+ * @param {Array} connections An array of connections at the station.
+ * @returns A list html element.
+ */
+function makeConnectionList(connections) {
+  let connectionList = "";
+  for (const j in connections) {
+    const connection = connections[j];
+    const content = [
+      connection.ConnectionType.Title,
+      connection.PowerKW + " kW",
+      "Qty: " + connection.Quantity,
+    ];
+    connectionList += makeUlElement(content, "connection-info");
+  }
+  connectionList = makeDivElement(
+    connectionList,
+    "station-card-connection connection-wrapper"
+  );
+  return connectionList;
+}
+
+/*====================Utilities: End of utilities/*====================*/
+
+function addMapLayer(id, type, geojson, paint, layout = null) {
+  let input = {
+    id: id,
+    type: type,
+    source: {
+      type: "geojson",
+      data: geojson,
+    },
+    paint: paint,
+  };
+  if (layout != null) {
+    input = { ...input, layout: layout };
+  }
+  map.addLayer(input);
+}
+
+/**
+ * Make a direction request using driving profile.
+ * An arbitrary start will alwayas be the same (the location searched by users).
+ * Only the end or destination will change.
+ * @param {Array} end The end or destination.
+ */
 async function getRoute(end) {
-  // make a directions request using driving profile
-  // an arbitrary start will always be the same
-  // only the end or destination will change
   const query = await fetch(
     `https://api.mapbox.com/directions/v5/mapbox/driving/${userLocation[0]},${userLocation[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
     { method: "GET" }
@@ -80,25 +237,17 @@ async function getRoute(end) {
   }
   // otherwise, we'll make a new request
   else {
-    map.addLayer({
-      id: "route",
-      type: "line",
-      source: {
-        type: "geojson",
-        data: geojson,
-      },
-      // TODO: Style
-      layout: {
-        "line-join": "round",
-        "line-cap": "round",
-        visibility: "visible",
-      },
-      paint: {
-        "line-color": "#3887be",
-        "line-width": 5,
-        "line-opacity": 0.75,
-      },
-    });
+    const layout = {
+      "line-join": "round",
+      "line-cap": "round",
+      visibility: "visible",
+    };
+    const paint = {
+      "line-color": "#3887be",
+      "line-width": 5,
+      "line-opacity": 0.75,
+    };
+    addMapLayer("route", "line", geojson, paint, layout);
   }
   // add turn instructions
   const instructions = document.getElementById("instructions");
@@ -123,11 +272,12 @@ async function getRoute(end) {
   }
 }
 
+/**
+ * Construct the station information html element
+ * @param {Integer} i Index of the station.
+ */
 async function getDetail(i) {
   const json = stationJson[i];
-  console.log(json);
-  // choose the best route
-
   const stationCard = document.getElementById("station-card");
 
   let stationInfo = "";
@@ -139,16 +289,20 @@ async function getDetail(i) {
   if (title.indexOf("(") > 0) {
     title = title.substring(0, title.indexOf("(")).trimEnd();
   }
-  stationInfo += `<p class="station-card-title">${title} <a href="#" class="close-detail" onclick="closeDetail()">&hookleftarrow;</a></p>`;
+
+  stationInfo += makePElement(
+    title +
+      " " +
+      makeAElement("&hookleftarrow;", "#", "close-detail", "closeDetail"),
+    "station-card-title"
+  );
 
   let usageType = "";
-  if (json.UsageType != null) {
-    if (json.UsageType.Title != null) {
-      usageType += json.UsageType.Title;
-    }
+  if (json.UsageType != null && json.UsageType.Title != null) {
+    usageType += json.UsageType.Title;
   }
   if (usageType != "") {
-    usageType = `<p class="station-card-usage-type">` + usageType + "</p>";
+    usageType = makePElement(usageType, "station-card-usage-type");
     stationInfo += usageType;
   }
 
@@ -166,36 +320,39 @@ async function getDetail(i) {
     }
   }
   if (address != "") {
-    address = `<p class="station-card-address">` + address + "</p>";
+    address = makePElement(address, "station-card-address");
     stationInfo += address;
   }
 
   if (json.AddressInfo.ContactTelephone1 != null) {
-    stationInfo += `<p class="station-card-number">${json.AddressInfo.ContactTelephone1}</p>`;
+    stationInfo += makePElement(
+      json.AddressInfo.ContactTelephone1,
+      "station-card-number"
+    );
   }
   if (
     json.AddressInfo.ContactTelephone1 == null &&
     json.AddressInfo.ContactTelephone2 != null
   ) {
-    stationInfo += `<p class="station-card-number">${json.AddressInfo.ContactTelephone2}</p>`;
+    stationInfo += makePElement(
+      json.AddressInfo.ContactTelephone2,
+      "station-card-number"
+    );
   }
 
   if (json.AddressInfo.RelatedURL != null) {
-    stationInfo += `<p class="station-card-website"><a class="station-card-website-link" href="${json.AddressInfo.RelatedURL}">${json.AddressInfo.RelatedURL}</a></p>`;
+    stationInfo += makePElement(
+      makeAElement(
+        "Website",
+        json.AddressInfo.RelatedURL,
+        "station-card-website-link"
+      ),
+      "station-card-website"
+    );
   }
 
-  let connectionList = ``;
   const connections = json.Connections;
-
-  // TODO: Validation, values might be null or Unknown
-  for (const j in connections) {
-    const connection = connections[j];
-    connectionList += `<ul class="connection-info"><li>${connection.ConnectionType.Title}</li><li>${connection.PowerKW} kW</li><li>Qty: ${connection.Quantity}</li></ul>`;
-  }
-  connectionList =
-    `<div class="station-card-connection connection-wrapper">` +
-    connectionList +
-    `</div>`;
+  const connectionList = makeConnectionList(connections);
 
   stationInfo += connectionList;
   stationCard.innerHTML = stationInfo;
@@ -206,7 +363,10 @@ async function getDetail(i) {
     .addTo(map);
 }
 
-// Argument: the json file fetched from Open Charger Map
+/**
+ * Draw the stations on the map.
+ * @param {JSON} json The json file fetched from Open Charge Map
+ */
 function drawStations(json) {
   // Remove previous search
   let counter = 0;
@@ -233,56 +393,90 @@ function drawStations(json) {
     if (!uniqueTitles.includes(title)) {
       uniqueTitles.push(title);
       const coord = [loc.AddressInfo.Longitude, loc.AddressInfo.Latitude];
-      map.addLayer({
-        id: "station" + i,
-        type: "circle",
-        source: {
-          type: "geojson",
-          data: {
-            type: "FeatureCollection",
-            features: [
-              {
-                type: "Feature",
-                properties: {},
-                geometry: {
-                  type: "Point",
-                  coordinates: coord,
-                },
-              },
-            ],
+      const geojson = {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            properties: {},
+            geometry: {
+              type: "Point",
+              coordinates: coord,
+            },
           },
-        },
-        paint: {
-          // TODO: Style of the marker?
-          "circle-radius": 10,
-          "circle-color": "#f30",
-        },
-      });
+        ],
+      };
+      const paint = {
+        // TODO: Style of the marker?
+        "circle-radius": 10,
+        "circle-color": "#f30",
+      };
+      addMapLayer("station" + i, "circle", geojson, paint);
+
       let dist = loc.AddressInfo.Distance; // TODO: Looks like the distance retrieved from Open Charge Map is the straight line distance not distance of the route
       if (loc.AddressInfo.DistanceUnit == 2) {
         dist = Math.round((dist / 1.609) * 10) / 10;
       } else {
         dist = Math.round(dist * 10) / 10;
       }
-      let connectionList = ``;
-      const connections = loc.Connections;
 
       // TODO: Validation, values might be null or Unknown
-      for (const j in connections) {
-        const connection = connections[j];
-        connectionList += `<ul class="connection-info"><li>${connection.ConnectionType.Title}</li><li>${connection.PowerKW} kW</li><li>Qty: ${connection.Quantity}</li></ul>`;
-      }
-      stationList +=
-        `<div class="station"><div class="station-header"><p class="station-title">${title}</p><div class="station-buttons"><button class="station-detail station-button station-content" data-index=${i}>Info</button><button class="station-nav station-button station-content" data-index=${i}>Nav</button></div></div><div class="station-info"><p class="distance">${dist} miles</p><div class="connection-wrapper">` +
-        connectionList +
-        `</div></div></div>`;
+      const connections = loc.Connections;
+      const connectionList = makeConnectionList(connections);
+
+      // Info and Nav buttons
+      const infoButton = makeButtonElement(
+        "Info",
+        "station-detail station-button station-content",
+        null,
+        "data-index",
+        i
+      );
+      const navButton = makeButtonElement(
+        "Nav",
+        "station-nav station-button station-content",
+        null,
+        "data-index",
+        i
+      );
+      const buttons = makeDivElement(infoButton + navButton, "station-buttons");
+
+      // Title
+      const stationTitle = makePElement(title, "station-title");
+
+      // Header = title + buttons
+      const stationHeader = makeDivElement(
+        stationTitle + buttons,
+        "station-header"
+      );
+
+      // Distance
+      const miles = makePElement(dist + "miles", "distance");
+
+      // Connection wrapper
+      const connectionWrapper = makeDivElement(
+        connectionList,
+        "connection-wrapper"
+      );
+
+      // Station Info
+      const stationInfo = makeDivElement(
+        miles + connectionWrapper,
+        "station-info"
+      );
+
+      stationList += makeDivElement(stationHeader + stationInfo, "station");
     }
   }
   stations.innerHTML = `${stationList}`;
 }
 
-// Argument: parsed location entered by user, number of stations to return
-// Note: coordinates used by mapbox is (long, lat)
+/**
+ * Find chargers near some location.
+ * @param {String} loc Parsed location entered by user.
+ * Note: coordinates used by mapbox is (long, lat).
+ * @param {Integer} numResult Number of stations to return.
+ */
 async function getStations(loc, numResult = 10) {
   // Convert the user entered location to coordinates
   const coordQuery = await fetch(
@@ -307,35 +501,13 @@ async function getStations(loc, numResult = 10) {
   if (map.getLayer("point")) {
     map.setCenter(userLocation).getSource("point").setData(geojson);
   } else {
-    map
-      .removeLayer("point")
-      .removeSource("point")
-      .setCenter(userLocation)
-      .addLayer({
-        id: "point",
-        type: "circle",
-        source: {
-          type: "geojson",
-          data: {
-            type: "FeatureCollection",
-            features: [
-              {
-                type: "Feature",
-                properties: {},
-                geometry: {
-                  type: "Point",
-                  coordinates: userLocation,
-                },
-              },
-            ],
-          },
-        },
-        paint: {
-          // TODO: Style
-          "circle-radius": 10,
-          "circle-color": "#3887be",
-        },
-      });
+    map.removeLayer("point").removeSource("point").setCenter(userLocation);
+    const paint = {
+      // TODO: Style
+      "circle-radius": 10,
+      "circle-color": "#3887be",
+    };
+    addMapLayer("point", "circle", geojson, paint);
   }
 
   const stationQuery = await fetch(
@@ -347,12 +519,18 @@ async function getStations(loc, numResult = 10) {
   drawStations(stationJson);
 }
 
+/**
+ * Find chargers near the user entered location
+ */
 const search = async function () {
+  // Parse the location
   let loc = document
     .getElementById("entered-location")
     .value.trimStart()
     .trimEnd();
   loc = loc.replaceAll(" ", "%20");
+
+  // TODO: location validation
   if (loc === "") {
     return;
   }
@@ -386,9 +564,13 @@ const search = async function () {
           map.setLayoutProperty("route", "visibility", "visible");
         }
         const stations = document.querySelector(".stations");
-        stations.classList.toggle("hide");
+        if (!stations.classList.contains("hide")) {
+          stations.classList.toggle("hide");
+        }
         const instructions = document.querySelector(".instructions");
-        instructions.classList.toggle("active");
+        if (!instructions.classList.contains("active")) {
+          instructions.classList.toggle("active");
+        }
       });
     }
   }
@@ -400,31 +582,25 @@ map.on("load", () => {
   getRoute(userLocation);
 
   // Add starting point to the map
-  map.addLayer({
-    id: "point",
-    type: "circle",
-    source: {
-      type: "geojson",
-      data: {
-        type: "FeatureCollection",
-        features: [
-          {
-            type: "Feature",
-            properties: {},
-            geometry: {
-              type: "Point",
-              coordinates: userLocation,
-            },
-          },
-        ],
+  const geojson = {
+    type: "FeatureCollection",
+    features: [
+      {
+        type: "Feature",
+        properties: {},
+        geometry: {
+          type: "Point",
+          coordinates: userLocation,
+        },
       },
-    },
-    paint: {
-      // TODO: Style
-      "circle-radius": 10,
-      "circle-color": "#3887be",
-    },
-  });
+    ],
+  };
+  const paint = {
+    // TODO: Style
+    "circle-radius": 10,
+    "circle-color": "#3887be",
+  };
+  addMapLayer("point", "circle", geojson, paint);
 });
 
 const onPressEnter = (event) => {
@@ -465,6 +641,21 @@ onSearchInput.addEventListener("keydown", onPressEnter);
 //     </ul>`;
 //   }
 // });
+
+function showLayout(layout) {
+  const isNone = map.getLayoutProperty(layout, "visibility");
+  if (isNone === "none") {
+    map.setLayoutProperty(layout, "visibility", "visible");
+  }
+}
+
+function hideLayout(layout) {
+  const isVisible = map.getLayoutProperty(layout, "visibility");
+  if (isVisible === "visible") {
+    map.setLayoutProperty(layout, "visibility", "none");
+  }
+}
+
 // TODO: Optimize
 document.addEventListener("click", function (event) {
   if (event.target.classList.contains("station-nav")) {
@@ -476,10 +667,7 @@ document.addEventListener("click", function (event) {
     stations.classList.toggle("hide");
     const instructions = document.querySelector(".instructions");
     instructions.classList.toggle("active");
-    const isNone = map.getLayoutProperty("route", "visibility");
-    if (isNone === "none") {
-      map.setLayoutProperty("route", "visibility", "visible");
-    }
+    showLayout("route");
   }
   if (event.target.classList.contains("bm_btn")) {
     document.querySelector(".bookmark_modal").classList.add("active");
@@ -498,10 +686,7 @@ document.addEventListener("click", function (event) {
         stations.classList.toggle("hide");
         const instructions = document.querySelector(".instructions");
         instructions.classList.toggle("active");
-        const isNone = map.getLayoutProperty("route", "visibility");
-        if (isNone === "none") {
-          map.setLayoutProperty("route", "visibility", "visible");
-        }
+        showLayout("route");
       }
     }
   }
@@ -512,10 +697,7 @@ const closeInstructions = function () {
   stations.classList.toggle("hide");
   const instructions = document.querySelector(".instructions");
   instructions.classList.toggle("active");
-  const isVisible = map.getLayoutProperty("route", "visibility");
-  if (isVisible === "visible") {
-    map.setLayoutProperty("route", "visibility", "none");
-  }
+  hideLayout("route");
 };
 
 const closeDetail = function () {
@@ -523,10 +705,7 @@ const closeDetail = function () {
   stations.classList.toggle("hide");
   const card = document.querySelector(".station-card");
   card.classList.toggle("active");
-  const isVisible = map.getLayoutProperty("route", "visibility");
-  if (isVisible === "visible") {
-    map.setLayoutProperty("route", "visibility", "none");
-  }
+  hideLayout("route");
 
   const oneMarker = document.querySelectorAll(".mapboxgl-marker");
   oneMarker.forEach((m) => {
