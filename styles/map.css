@@ -243,12 +243,20 @@ body {
 }
 
 .stations {
+  display: none;
   font-family: "Poppins", sans-serif;
   width: 100%;
   background-color: #fff;
   border-radius: 0.5rem;
-  overflow-y: scroll;
   z-index: 10;
+}
+
+.scroll-y {
+  overflow-y: scroll;
+}
+
+.add-padding {
+  padding: 0.5rem;
 }
 
 .station {
@@ -758,4 +766,32 @@ body {
 
 .bookmark:hover .fa-trash {
   color: #999;
+}
+
+.station-marker {
+  background-image: url("charging-station.svg");
+  background-size: cover;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}
+
+.car-marker {
+  background-image: url("car.svg");
+  background-size: cover;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}
+
+.indicator {
+  background-image: url("marker.svg");
+  background-size: cover;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  transform: translate(500%, 500%);
+  position: absolute;
+  top: -1.2rem !important;
+  filter: drop-shadow(2px 2px 1px rgb(0 0 0 / 0.4));
 }

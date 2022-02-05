@@ -5,6 +5,8 @@ const profileModal = document.querySelector(".profile_modal");
 const onSearchInput = document.getElementById("entered-location");
 const locationBtn = document.getElementById("currentBtn");
 const askBtnArea = document.querySelector(".btn_area");
+let carMarker = [];
+let stationMarkers = [];
 
 profileBtn.addEventListener("click", () => {
   profileModal.classList.add("active");
@@ -195,6 +197,36 @@ function makeConnectionList(connections) {
   return connectionList;
 }
 
+/*====================Utilities: Manipulate display/*====================*/
+
+function hideElement(hideClass) {
+  if (document.querySelector(hideClass).classList.contains("active")) {
+    const stationCard = document.querySelector(hideClass);
+    stationCard.classList.toggle("active");
+  }
+}
+
+function showElement(showClass) {
+  if (!document.querySelector(showClass).classList.contains("active")) {
+    const stationCard = document.querySelector(showClass);
+    stationCard.classList.toggle("active");
+  }
+}
+
+function hideLayout(layout) {
+  const isVisible = map.getLayoutProperty(layout, "visibility");
+  if (isVisible === "visible") {
+    map.setLayoutProperty(layout, "visibility", "none");
+  }
+}
+
+function showLayout(layout) {
+  const isNone = map.getLayoutProperty(layout, "visibility");
+  if (isNone === "none") {
+    map.setLayoutProperty(layout, "visibility", "visible");
+  }
+}
+
 /*====================Utilities: End of utilities/*====================*/
 
 function addMapLayer(id, type, geojson, paint, layout = null) {
@@ -255,6 +287,9 @@ async function getRoute(end) {
       "line-opacity": 0.75,
     };
     addMapLayer("route", "line", geojson, paint, layout);
+    // let marker = carMarker.pop();
+    // marker.setLngLat(userLocation);
+    // carMarker.push(marker);
   }
   // add turn instructions
   const instructions = document.getElementById("instructions");
@@ -365,9 +400,20 @@ async function getDetail(i) {
   stationCard.innerHTML = stationInfo;
 
   //Add marker
-  new mapboxgl.Marker()
-    .setLngLat([json.AddressInfo.Longitude, json.AddressInfo.Latitude])
-    .addTo(map);
+  addIndicator([json.AddressInfo.Longitude, json.AddressInfo.Latitude]);
+}
+
+function addIndicator(loc) {
+  let el = document.createElement("div");
+  el.className = "indicator";
+  new mapboxgl.Marker(el).setLngLat(loc).addTo(map);
+}
+
+function removeIndicator() {
+  if (document.querySelector(".indicator")) {
+    const oneMarker = document.querySelector(".indicator");
+    oneMarker.remove();
+  }
 }
 
 /**
@@ -376,12 +422,9 @@ async function getDetail(i) {
  */
 function drawStations(json) {
   // Remove previous search
-  let counter = 0;
-  while (counter <= 10) {
-    if (map.getLayer("station" + counter)) {
-      map.removeLayer("station" + counter).removeSource("station" + counter);
-    }
-    counter++;
+  while (stationMarkers.length > 0) {
+    let stationMarker = stationMarkers.pop();
+    stationMarker.remove();
   }
 
   // Add new search
@@ -400,26 +443,11 @@ function drawStations(json) {
     if (!uniqueTitles.includes(title)) {
       uniqueTitles.push(title);
       const coord = [loc.AddressInfo.Longitude, loc.AddressInfo.Latitude];
-      const geojson = {
-        type: "FeatureCollection",
-        features: [
-          {
-            type: "Feature",
-            properties: {},
-            geometry: {
-              type: "Point",
-              coordinates: coord,
-            },
-          },
-        ],
-      };
-      const paint = {
-        // TODO: Style of the marker?
-        "circle-radius": 10,
-        "circle-color": "#19D3AB",
-      };
-      addMapLayer("station" + i, "circle", geojson, paint);
-
+      let el = document.createElement("div");
+      el.className = "station-marker";
+      el.dataset.index = i;
+      let marker = new mapboxgl.Marker(el).setLngLat(coord).addTo(map);
+      stationMarkers.push(marker);
       let dist = loc.AddressInfo.Distance; // TODO: Looks like the distance retrieved from Open Charge Map is the straight line distance not distance of the route
       if (loc.AddressInfo.DistanceUnit == 2) {
         dist = Math.round((dist / 1.609) * 10) / 10;
@@ -476,6 +504,29 @@ function drawStations(json) {
     }
   }
   stations.innerHTML = `${stationList}`;
+  if (!stations.classList.contains("scroll-y")) {
+    stations.classList.toggle("scroll-y");
+  }
+  if (stations.classList.contains("add-padding")) {
+    stations.classList.toggle("add-padding");
+  }
+}
+
+/**
+ * Add message to the html element with id "stations" when no stations found.
+ */
+function stationsNotFound() {
+  const stations = document.getElementById("stations");
+  stations.innerHTML = makePElement(
+    "Stations not found, please make sure your location is correct.",
+    "station-not-found-message"
+  );
+  if (stations.classList.contains("scroll-y")) {
+    stations.classList.toggle("scroll-y");
+  }
+  if (!stations.classList.contains("add-padding")) {
+    stations.classList.toggle("add-padding");
+  }
 }
 
 /**
@@ -491,31 +542,15 @@ async function getStations(loc, numResult = 10) {
     { method: "GET" }
   );
   const coordJson = await coordQuery.json();
-  userLocation = coordJson.features[0].center;
-  const geojson = {
-    type: "FeatureCollection",
-    features: [
-      {
-        type: "Feature",
-        properties: {},
-        geometry: {
-          type: "Point",
-          coordinates: userLocation,
-        },
-      },
-    ],
-  };
-  if (map.getLayer("point")) {
-    map.setCenter(userLocation).getSource("point").setData(geojson);
-  } else {
-    map.removeLayer("point").removeSource("point").setCenter(userLocation);
-    const paint = {
-      // TODO: Style
-      "circle-radius": 10,
-      "circle-color": "#19D3AB",
-    };
-    addMapLayer("point", "circle", geojson, paint);
+  if (coordJson.features.length == 0) {
+    stationsNotFound();
+    return;
   }
+  userLocation = coordJson.features[0].center;
+  map.setCenter(userLocation);
+  let marker = carMarker.pop();
+  marker.setLngLat(userLocation);
+  carMarker.push(marker);
 
   const stationQuery = await fetch(
     `https://api.openchargemap.io/v3/poi/?key=${openchargemap_accessToken}&output=json&latitude=${userLocation[1]}&longitude=${userLocation[0]}&maxresults=${numResult}`
@@ -529,7 +564,7 @@ async function getStations(loc, numResult = 10) {
 /**
  * Find chargers near the user entered location
  */
-const search = async function () {
+async function search() {
   // Parse the location
   let loc = document
     .getElementById("entered-location")
@@ -537,91 +572,44 @@ const search = async function () {
     .trimEnd();
   loc = loc.replaceAll(" ", "%20");
 
+  if (
+    document.querySelector("#station-bookmark").classList.contains("active")
+  ) {
+    document.querySelector("#station-bookmark").classList.remove("active");
+  }
+
   // TODO: location validation
   if (loc === "") {
     askLocation();
     return;
   }
   await getStations(loc);
-
-  if (
-    document.querySelector("#station-bookmark").classList.contains("active")
-  ) {
-    document.querySelector("#station-bookmark").classList.remove("active");
-  }
-  if (document.querySelector(".stations").classList.contains("hide")) {
-    const stations = document.querySelector(".stations");
-    stations.classList.toggle("hide");
-  }
-  if (document.querySelector(".station-card").classList.contains("active")) {
-    const stationCard = document.querySelector(".station-card");
-    stationCard.classList.toggle("active");
-  }
-  if (document.querySelector(".instructions").classList.contains("active")) {
-    const instructions = document.querySelector(".instructions");
-    instructions.classList.toggle("active");
-  }
-  //add point-click event
-  for (let s = 0; s <= 10; s++) {
-    if (map.getLayer("station" + s)) {
-      map.on("click", `station${s}`, (e) => {
-        const clickedLngLat = e.lngLat;
-        getRoute([clickedLngLat.lng, clickedLngLat.lat]);
-        const isNone = map.getLayoutProperty("route", "visibility");
-        if (isNone === "none") {
-          map.setLayoutProperty("route", "visibility", "visible");
-        }
-        const stations = document.querySelector(".stations");
-        if (!stations.classList.contains("hide")) {
-          stations.classList.toggle("hide");
-        }
-        const instructions = document.querySelector(".instructions");
-        if (!instructions.classList.contains("active")) {
-          instructions.classList.toggle("active");
-        }
-      });
-    }
-  }
-};
+}
 
 map.on("load", () => {
   // make an initial directions request that
   // starts and ends at the same location
   getRoute(userLocation);
-
-  // Add starting point to the map
-  const geojson = {
-    type: "FeatureCollection",
-    features: [
-      {
-        type: "Feature",
-        properties: {},
-        geometry: {
-          type: "Point",
-          coordinates: userLocation,
-        },
-      },
-    ],
-  };
-  const paint = {
-    // TODO: Style
-    "circle-radius": 10,
-    "circle-color": "#D21941",
-  };
-  addMapLayer("point", "circle", geojson, paint);
+  let el = document.createElement("div");
+  el.className = "car-marker";
+  let marker = new mapboxgl.Marker(el).setLngLat(userLocation).addTo(map);
+  carMarker.push(marker);
 });
 
 const onPressEnter = (event) => {
   let key = event.key || event.keyCode;
-
   if (key === "Enter" || key === 13) {
+    hideLayout("route");
+    removeIndicator();
+    hideElement(".station-card");
+    hideElement(".instructions");
     search();
+    showElement(".stations");
   }
 };
 
 const onSearch = document.querySelector(".search");
 
-onSearch.addEventListener("click", search);
 onSearchInput.addEventListener("keydown", onPressEnter);
 onSearchInput.addEventListener("keyup", () => {
   if (onSearchInput.value.trimStart().trimEnd() === "") {
@@ -656,41 +644,47 @@ onSearchInput.addEventListener("keyup", () => {
 //   }
 // });
 
-function showLayout(layout) {
-  const isNone = map.getLayoutProperty(layout, "visibility");
-  if (isNone === "none") {
-    map.setLayoutProperty(layout, "visibility", "visible");
-  }
-}
-
-function hideLayout(layout) {
-  const isVisible = map.getLayoutProperty(layout, "visibility");
-  if (isVisible === "visible") {
-    map.setLayoutProperty(layout, "visibility", "none");
-  }
-}
-
-// TODO: Optimize
 document.addEventListener("click", function (event) {
-  if (event.target.classList.contains("station-nav")) {
+  if (event.target.classList.contains("search")) {
+    hideLayout("route");
+    removeIndicator();
+    hideElement(".station-card");
+    hideElement(".instructions");
+    search();
+    showElement(".stations");
+  } else if (event.target.classList.contains("station-detail")) {
+    const i = event.target.getAttribute("data-index");
+    removeIndicator();
+    getDetail(i);
+    hideElement(".stations");
+    showElement(".station-card");
+  } else if (event.target.classList.contains("station-marker")) {
     const i = event.target.getAttribute("data-index");
     const loc = stationJson[i];
     const coord = [loc.AddressInfo.Longitude, loc.AddressInfo.Latitude];
+    removeIndicator();
+    hideElement(".station-card");
+    hideElement(".stations");
+    addIndicator(coord);
     getRoute(coord);
-    const stations = document.querySelector(".stations");
-    stations.classList.toggle("hide");
-    const instructions = document.querySelector(".instructions");
-    instructions.classList.toggle("active");
+    showElement(".instructions");
     showLayout("route");
-  }
-  if (event.target.classList.contains("bm_btn")) {
+  } else if (event.target.classList.contains("station-nav")) {
+    const i = event.target.getAttribute("data-index");
+    const loc = stationJson[i];
+    const coord = [loc.AddressInfo.Longitude, loc.AddressInfo.Latitude];
+    addIndicator(coord);
+    getRoute(coord);
+    hideElement(".stations");
+    showElement(".instructions");
+    showLayout("route");
+  } else if (event.target.classList.contains("bm_btn")) {
     document.querySelector(".bookmark_modal").classList.add("active");
     const long = Number(event.target.getAttribute("lng"));
     const lati = Number(event.target.getAttribute("lat"));
     document.querySelector(".add_btn").setAttribute("long", long);
     document.querySelector(".add_btn").setAttribute("lati", lati);
-  }
-  if (event.target.classList.contains("bookmark_thing")) {
+  } else if (event.target.classList.contains("bookmark_thing")) {
     const storageList = JSON.parse(localStorage.getItem("@locationBM"));
     const name = event.target.getAttribute("title");
     for (let s of storageList) {
@@ -707,36 +701,18 @@ document.addEventListener("click", function (event) {
 });
 
 const closeInstructions = function () {
-  const stations = document.querySelector(".stations");
-  stations.classList.toggle("hide");
-  const instructions = document.querySelector(".instructions");
-  instructions.classList.toggle("active");
+  removeIndicator();
+  hideElement(".instructions");
+  showElement(".stations");
   hideLayout("route");
 };
 
 const closeDetail = function () {
-  const stations = document.querySelector(".stations");
-  stations.classList.toggle("hide");
-  const card = document.querySelector(".station-card");
-  card.classList.toggle("active");
+  removeIndicator();
+  hideElement(".station-card");
+  showElement(".stations");
   hideLayout("route");
-
-  const oneMarker = document.querySelectorAll(".mapboxgl-marker");
-  oneMarker.forEach((m) => {
-    m.remove();
-  });
 };
-
-document.addEventListener("click", function (event) {
-  if (event.target.classList.contains("station-detail")) {
-    const i = event.target.getAttribute("data-index");
-    getDetail(i);
-    const stations = document.querySelector(".stations");
-    stations.classList.toggle("hide");
-    const card = document.querySelector(".station-card");
-    card.classList.toggle("active");
-  }
-});
 
 document.querySelector(".close_button").addEventListener("click", () => {
   document.querySelector(".bookmark_modal").classList.remove("active");
