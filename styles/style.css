@@ -9,7 +9,9 @@ body {
 }
 .page_wrapper {
   width: 100%;
+  padding-top: 80px;
 }
+
 /* ======logo===== */
 .square_logo {
   display: none;
@@ -23,7 +25,6 @@ body {
   font-size: 140px;
   font-weight: 600;
   line-height: 170px;
-  margin-top: 80px;
   text-align: center;
 }
 
@@ -109,7 +110,7 @@ body {
   text-align: center;
 }
 
-.btn_wrapper .signUp_btn {
+.btn_wrapper .start_btn {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   background-color: #294b57;
@@ -121,7 +122,6 @@ body {
   height: 60px;
   width: 150px;
   font-weight: 700;
-  margin-right: 40px;
   padding: 0.7rem 2rem;
   text-align: center;
   text-decoration: none;
@@ -132,37 +132,7 @@ body {
     -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
 }
 
-.btn_wrapper .signUp_btn:hover {
-  -webkit-transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
-  transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
-  background-color: #19d3ab;
-  color: #294b57;
-}
-
-.btn_wrapper .signIn_btn {
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  background-color: #294b57;
-  border-radius: 3rem;
-  border: 0.3rem solid #19d3ab;
-  color: #19d3ab;
-  font-family: "Poppins", sans-serif;
-  font-size: 18px;
-  height: 60px;
-  width: 150px;
-  font-weight: 700;
-  margin-left: 40px;
-  padding: 0.7rem 2rem;
-  text-align: center;
-  text-decoration: none;
-  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-  transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95),
-    -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-}
-
-.btn_wrapper .signIn_btn:hover {
+.btn_wrapper .start_btn:hover {
   -webkit-transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
   transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
   background-color: #19d3ab;
@@ -171,47 +141,8 @@ body {
 
 /* ======modal======= */
 
-.signUp_modal,
-.signIn_modal {
-  display: none;
-  background-color: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  overflow: auto;
-  top: 0;
-  left: 0;
-  text-align: left;
-}
 .active {
   display: block;
-}
-.signUp_modal .form_wrapper {
-  font-family: "Poppins", sans-serif;
-  background-color: #19d3ab;
-  border-radius: 3rem;
-  width: 30rem;
-  height: 30rem;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  padding: 0px 3rem;
-  animation: slide-up 0.5s forwards cubic-bezier(0.4, 0, 0, 1.5);
-}
-
-.signIn_modal .form_wrapper {
-  font-family: "Poppins", sans-serif;
-  background-color: #19d3ab;
-  border-radius: 3rem;
-  width: 30rem;
-  height: 25rem;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  padding: 0px 3rem;
-  animation: slide-up 0.5s forwards cubic-bezier(0.4, 0, 0, 1.5);
 }
 
 @keyframes slide-up {
@@ -225,94 +156,6 @@ body {
   }
 }
 
-.signUp_form,
-.signIn_form {
-  width: 100%;
-}
-
-.signUp_label,
-.signIn_label {
-  display: block;
-  font-size: 1.5rem;
-}
-
-.signUp_text,
-.signIn_text {
-  font-size: 2.5rem;
-  margin: 2rem 0px;
-}
-/*# sourceMappingURL=style.css.map */
-
-.signUp_text,
-.signUp_label,
-.signIn_text,
-.signIn_label {
-  color: #294b57;
-}
-
-.form_content {
-  display: flex;
-  flex-direction: column;
-  /* ====align-items: center;==== */
-  justify-content: center;
-  margin-bottom: 0.5rem;
-}
-
-.signUp_input,
-.signIn_input {
-  width: 100%;
-  height: 2rem;
-  font-size: 1.2rem;
-  border: none;
-  outline: none;
-  border-radius: 100px;
-  padding: 0.5rem 1rem;
-}
-
-.signUp_btns,
-.signIn_btns {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin: 2.5rem 0px;
-}
-
-.signUp_btns .signUp_btn,
-.signUp_btns .signUp_cancel,
-.signIn_btns .signIn_btn,
-.signIn_btns .signIn_cancel {
-  width: 45%;
-  height: 3rem;
-  font-size: 1.2rem;
-  font-family: "Poppins", sans-serif;
-  color: #294b57;
-  font-weight: 600;
-  background-color: #19d3ab;
-  border: 0.2rem solid #294b57;
-  border-radius: 100px;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  text-align: center;
-
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-  transition: -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95),
-    -webkit-transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
-}
-
-.signUp_btns .signUp_btn:hover,
-.signUp_btns .signUp_cancel:hover,
-.signIn_btns .signIn_btn:hover,
-.signIn_btns .signIn_cancel:hover {
-  -webkit-transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
-  transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0);
-  background-color: #294b57;
-  color: #19d3ab;
-}
 /* =======Media Queries============= */
 
 @media only screen and (min-width: 200px) and (max-width: 790px) {
@@ -342,56 +185,6 @@ body {
 
   .btn_wrapper {
     margin-top: 3rem;
-  }
-
-  .signUp_modal .form_wrapper {
-    font-family: "Poppins", sans-serif;
-    background-color: #19d3ab;
-    border-radius: 3rem;
-    width: 20rem;
-    height: 24rem;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    padding: 0px 2rem;
-  }
-
-  .signIn_modal .form_wrapper {
-    font-family: "Poppins", sans-serif;
-    background-color: #19d3ab;
-    border-radius: 3rem;
-    width: 20rem;
-    height: 20rem;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    padding: 0px 2rem;
-  }
-
-  .signUp_label,
-  .signIn_label {
-    display: block;
-    font-size: 1rem;
-  }
-
-  .signUp_text,
-  .signIn_text {
-    font-size: 2rem;
-    margin: 1rem 0px;
-  }
-
-  .btn_wrapper .signIn_btn {
-    display: block;
-    margin: 1rem auto;
-    width: 15rem;
-  }
-
-  .btn_wrapper .signUp_btn {
-    display: block;
-    margin: 0 auto;
-    width: 15rem;
   }
 }
 
