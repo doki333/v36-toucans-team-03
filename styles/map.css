@@ -360,6 +360,10 @@ body {
   margin-bottom: 0rem;
 }
 
+.station-card-title a {
+  text-decoration: none;
+}
+
 .instructions ol li {
   padding-left: 1rem;
   margin-bottom: 1rem;
