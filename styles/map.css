@@ -254,6 +254,8 @@ body {
 
 .add-padding {
   padding: 0.5rem;
+  background-color: #f8d7da;
+  color: #723641;
 }
 
 .station {
