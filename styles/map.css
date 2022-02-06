@@ -249,9 +249,6 @@ body {
   background-color: #fff;
   border-radius: 0.5rem;
   z-index: 10;
-}
-
-.scroll-y {
   overflow-y: scroll;
 }
 
@@ -271,13 +268,14 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 0.5rem 0.7rem 0rem 0.7rem;
 }
 
 .station-title {
   font-size: 1.2rem;
   line-height: 1.05;
+  align-self: center;
   /* padding: 0.7rem 0.7rem 0rem 0.7rem; */
 }
 
@@ -475,7 +473,7 @@ body {
   z-index: 10;
 }
 @media only screen and (min-width: 200px) and (max-width: 790px) {
-  .navigation {
+  /* .navigation {
     flex-direction: column;
     gap: 0.5rem;
     width: 12rem;
@@ -485,6 +483,47 @@ body {
   }
   .entered-location {
     width: 12rem;
+  } */
+  .stations {
+    display: none;
+    flex-direction: row;
+    width: 100%;
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    border-radius: 0rem;
+  }
+
+  .stations.active {
+    display: flex;
+  }
+
+  .station {
+    border-right: 1px solid #294b57;
+    border-bottom: none;
+    min-width: 17rem;
+  }
+
+  .station-card {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .navigation {
+    width: 16rem;
+  }
+  .entered-location {
+    width: 11rem;
+  }
+  .instructions {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    max-height: 15rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
   .menu {
     width: 80px;
@@ -795,3 +834,33 @@ body {
   top: -1.2rem !important;
   filter: drop-shadow(2px 2px 1px rgb(0 0 0 / 0.4));
 }
+
+/* @media (max-width: 420px) {
+  .stations {
+    display: none;
+    flex-direction: row;
+    width: 100%;
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    border-radius: 0rem;
+  }
+
+  .stations.active {
+    display: flex;
+  }
+
+  .station {
+    border-right: 1px solid #294b57;
+    border-bottom: none;
+    min-width: 17rem;
+  }
+
+  .station-card {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+} */

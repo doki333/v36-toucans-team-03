@@ -504,9 +504,9 @@ function drawStations(json) {
     }
   }
   stations.innerHTML = `${stationList}`;
-  if (!stations.classList.contains("scroll-y")) {
-    stations.classList.toggle("scroll-y");
-  }
+  // if (!stations.classList.contains("scroll-y")) {
+  //   stations.classList.toggle("scroll-y");
+  // }
   if (stations.classList.contains("add-padding")) {
     stations.classList.toggle("add-padding");
   }
@@ -521,9 +521,9 @@ function stationsNotFound() {
     "Stations not found, please make sure your location is correct.",
     "station-not-found-message"
   );
-  if (stations.classList.contains("scroll-y")) {
-    stations.classList.toggle("scroll-y");
-  }
+  // if (stations.classList.contains("scroll-y")) {
+  //   stations.classList.toggle("scroll-y");
+  // }
   if (!stations.classList.contains("add-padding")) {
     stations.classList.toggle("add-padding");
   }
