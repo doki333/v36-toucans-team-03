@@ -80,7 +80,7 @@
             </div>
             <label for="profile_email" class="profile_label">📧Email📧</label>
             <textarea name="profile_email" id="profile_email" disabled rows="2">
-exampdddddddddle@abc.com</textarea
+exampdddddddle@abc.com</textarea
             >
             <div class="profile_btns">
               <button type="button" class="signOut_btn">Sign Out</button>
@@ -99,6 +99,7 @@ exampdddddddddle@abc.com</textarea
           class="entered-location"
           placeholder="Empty for Current Location"
           autocomplete="off"
+          autofocus
         /> 
         <button type="button" class="search">📍</button>
       </div>   
@@ -108,7 +109,7 @@ exampdddddddddle@abc.com</textarea
       <div class="station-bookmark" id="station-bookmark"></div>
   
     <!-------Bookmark form------->
-    <!-- <div class="bookmark_modal">
+    <div class="bookmark_modal">
       <form class="location_form">
         <div class="form_title">
           Bookmark
@@ -119,6 +120,7 @@ exampdddddddddle@abc.com</textarea
             type="text"
             class="bookmark_control"
             placeholder="What do you want to save?"
+            required
           />
         </div>
         <div class="form_bottom">
@@ -130,7 +132,7 @@ exampdddddddddle@abc.com</textarea
     </div>
     <div class="overlay"></div>
 
-    <div class="floater content">
+    <!-- <div class="floater content">
       <form class="bookmark-form">
         <div class="floater-top">
           <input
