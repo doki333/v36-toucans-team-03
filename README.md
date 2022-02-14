@@ -36,7 +36,6 @@ Charging U
 
 ## Frameworks
 
-- [x] [Bootstrap 5](https://getbootstrap.com/)
 
 # Obstacles
 
