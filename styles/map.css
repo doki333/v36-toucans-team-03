@@ -278,7 +278,6 @@ body {
   font-size: 1.2rem;
   line-height: 1.05;
   align-self: center;
-  /* padding: 0.7rem 0.7rem 0rem 0.7rem; */
 }
 
 .station-buttons {
@@ -479,17 +478,6 @@ a {
   z-index: 10;
 }
 @media only screen and (min-width: 200px) and (max-width: 790px) {
-  /* .navigation {
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 12rem;
-    padding-top: 1rem;
-    padding-left: 1rem;
-    height: inherit;
-  }
-  .entered-location {
-    width: 12rem;
-  } */
   .stations {
     display: none;
     flex-direction: row;
@@ -857,33 +845,6 @@ a {
   color: #19d3ab;
   display: inline;
 }
-
-/* @media (max-width: 420px) {
-  .stations {
-    display: none;
-    flex-direction: row;
-    width: 100%;
-    position: absolute;
-    bottom: 1rem;
-    left: 0;
-    border-radius: 0rem;
-  }
-
-  .stations.active {
-    display: flex;
-  }
-
-  .station {
-    border-right: 1px solid #294b57;
-    border-bottom: none;
-    min-width: 17rem;
-  }
-
-  .station-card {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-} */
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-attrib {
+  display: none;
+}

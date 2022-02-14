@@ -32,7 +32,7 @@ const map = new mapboxgl.Map({
   center: userLocation,
   zoom: 12,
 });
-
+map.addControl(new mapboxgl.AttributionControl(), "bottom-left");
 map.addControl(
   new mapboxgl.GeolocateControl({
     positionOptions: {
@@ -673,7 +673,6 @@ document.addEventListener("click", function (event) {
   } else if (event.target.classList.contains("bookmark_thing")) {
     const name = event.target.innerText.split("\n")[0];
     const storageList = JSON.parse(localStorage.getItem("@locationBM"));
-    console.log(storageList);
     for (let s of storageList) {
       if (s.title === name) {
         getRoute(s.location);
@@ -693,15 +692,28 @@ document.addEventListener("click", function (event) {
     hideElement(".bookmark_modal");
     document.querySelector(".bookmark_control").value = "";
   } else if (event.target.classList.contains("add_btn")) {
-    const long = Number(event.target.getAttribute("long"));
-    const lati = Number(event.target.getAttribute("lati"));
-    let isEmpty = JSON.parse(localStorage.getItem("@locationBM"));
-    settingLocalStorage(isEmpty, [long, lati]);
+    addBookmark(event);
     hideElement(".bookmark_modal");
+  }
+});
+
+function addBookmark(event) {
+  const long = Number(event.target.getAttribute("long"));
+  const lati = Number(event.target.getAttribute("lati"));
+  let isEmpty = JSON.parse(localStorage.getItem("@locationBM"));
+  let locName = document
+    .querySelector(".bookmark_control")
+    .value.trimStart()
+    .trimEnd();
+  if (locName === "") {
+    document.querySelector(".bookmark_control").value = "";
+    return;
+  } else if (locName !== "") {
+    settingLocalStorage(isEmpty, locName, [long, lati]);
     document.querySelector(".bookmark_control").value = "";
     document.querySelector(".bm_btn").innerText = "★";
   }
-});
+}
 
 function removeBookmark(location) {
   const isSaved = JSON.parse(localStorage.getItem("@locationBM"));
@@ -765,22 +777,27 @@ function makeBookmarkList(array) {
   bookmarkDiv.innerHTML = list;
   return list;
 }
-function settingLocalStorage(storage, [long, lati]) {
+function settingLocalStorage(storage, locValue, [long, lati]) {
   if (storage === null) {
     storage = [];
     const entry = {
-      title: document.querySelector(".bookmark_control").value,
+      title: locValue,
       location: [long, lati],
     };
     storage.push(entry);
     localStorage.setItem("@locationBM", JSON.stringify(storage));
   } else if (storage !== null) {
     storage.push({
-      title: document.querySelector(".bookmark_control").value,
+      title: locValue,
       location: [long, lati],
     });
     localStorage.setItem("@locationBM", JSON.stringify(storage));
   }
+}
+
+if (window.innerWidth <= 790) {
+  const ctrlGroup = document.querySelector(".mapboxgl-ctrl-bottom-right");
+  ctrlGroup.style.bottom = `${window.innerHeight / 2}px`;
 }
 
 // const input = document.querySelector("input[type=text]");
