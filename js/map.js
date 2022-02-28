@@ -32,7 +32,7 @@ const map = new mapboxgl.Map({
   center: userLocation,
   zoom: 12,
 });
-
+map.addControl(new mapboxgl.AttributionControl(), "bottom-left");
 map.addControl(
   new mapboxgl.GeolocateControl({
     positionOptions: {
@@ -118,11 +118,11 @@ function makeAElement(
  * @param {String} classes Classes of the html element.
  * @returns String, a unordered list html element.
  */
-function makeUlElement(liContent, classes) {
+function makeUlElement(liContent, classes, classes2) {
   let res = `<ul class="${classes}">`;
   for (const i in liContent) {
     const content = liContent[i];
-    res += `<li>${content}</li>`;
+    if (classes2 !== null) res += `<li class="${classes2}">${content}</li>`;
   }
   res += "</ul>";
   return res;
@@ -584,6 +584,9 @@ async function search() {
     return;
   }
   await getStations(loc);
+  map.flyTo({
+    zoom: 14,
+  });
 }
 
 map.on("load", () => {
@@ -619,31 +622,6 @@ onSearchInput.addEventListener("keyup", () => {
   }
 });
 
-// document.querySelector(".station-list").addEventListener("click", () => {
-//   const bookmark_list = JSON.parse(localStorage.getItem("@locationBM"));
-//   const stations = document.querySelector(".stations");
-//   stations.classList.toggle("hide");
-//   const instructions = document.querySelector(".instructions");
-//   instructions.classList.toggle("hide");
-//   const bM = document.querySelector(".station-bookmark");
-//   bM.classList.toggle("active");
-//   console.log(bookmark_list);
-//   if (bookmark_list) {
-//     bM.innerHTML = "";
-//     for (list of bookmark_list) {
-//       bM.innerHTML += `
-//       <ul>
-//         <li class="bookmark_thing" title=${list.title}>${list.title}<p style="color: #19d3ab; display: inline">★</p></li>
-//       </ul>`;
-//     }
-//   } else if (!bookmark_list) {
-//     bM.innerHTML += `
-//     <ul>
-//       <li>Nothing!</li>
-//     </ul>`;
-//   }
-// });
-
 document.addEventListener("click", function (event) {
   if (event.target.classList.contains("search")) {
     hideLayout("route");
@@ -678,27 +656,75 @@ document.addEventListener("click", function (event) {
     hideElement(".stations");
     showElement(".instructions");
     showLayout("route");
+    map.flyTo({
+      center: coord,
+      zoom: 15,
+    });
   } else if (event.target.classList.contains("bm_btn")) {
-    document.querySelector(".bookmark_modal").classList.add("active");
+    showElement(".bookmark_modal");
     const long = Number(event.target.getAttribute("lng"));
     const lati = Number(event.target.getAttribute("lat"));
     document.querySelector(".add_btn").setAttribute("long", long);
     document.querySelector(".add_btn").setAttribute("lati", lati);
+    if (event.target.innerText === "★") {
+      hideElement(".bookmark_modal");
+      removeBookmark([long, lati]);
+    }
   } else if (event.target.classList.contains("bookmark_thing")) {
+    const name = event.target.innerText.split("\n")[0];
     const storageList = JSON.parse(localStorage.getItem("@locationBM"));
-    const name = event.target.getAttribute("title");
     for (let s of storageList) {
       if (s.title === name) {
         getRoute(s.location);
-        const stations = document.querySelector(".stations");
-        stations.classList.toggle("hide");
-        const instructions = document.querySelector(".instructions");
-        instructions.classList.toggle("active");
+        hideElement(".station-bookmark");
+        showElement(".instructions");
         showLayout("route");
+        map.flyTo({
+          center: s.location,
+          zoom: 13,
+        });
       }
     }
+  } else if (event.target.classList.contains("station-list")) {
+    bringBookmark();
+    if (map.getLayer("route")) hideLayout("route");
+  } else if (event.target.classList.contains("close_button")) {
+    hideElement(".bookmark_modal");
+    document.querySelector(".bookmark_control").value = "";
+  } else if (event.target.classList.contains("add_btn")) {
+    addBookmark(event);
+    hideElement(".bookmark_modal");
   }
 });
+
+function addBookmark(event) {
+  const long = Number(event.target.getAttribute("long"));
+  const lati = Number(event.target.getAttribute("lati"));
+  let isEmpty = JSON.parse(localStorage.getItem("@locationBM"));
+  let locName = document
+    .querySelector(".bookmark_control")
+    .value.trimStart()
+    .trimEnd();
+  if (locName === "") {
+    document.querySelector(".bookmark_control").value = "";
+    return;
+  } else if (locName !== "") {
+    settingLocalStorage(isEmpty, locName, [long, lati]);
+    document.querySelector(".bookmark_control").value = "";
+    document.querySelector(".bm_btn").innerText = "★";
+  }
+}
+
+function removeBookmark(location) {
+  const isSaved = JSON.parse(localStorage.getItem("@locationBM"));
+  const wantToDelete = isSaved.find((e) => {
+    return e.location[0] === location[0] && e.location[1] === location[1];
+  });
+  const deleteIndex = isSaved.indexOf(wantToDelete);
+  isSaved.splice(deleteIndex, 1);
+  localStorage.setItem("@locationBM", JSON.stringify(isSaved));
+  document.querySelector(".bm_btn").innerText = "☆";
+}
 
 const closeInstructions = function () {
   removeIndicator();
@@ -714,37 +740,6 @@ const closeDetail = function () {
   hideLayout("route");
 };
 
-document.querySelector(".close_button").addEventListener("click", () => {
-  document.querySelector(".bookmark_modal").classList.remove("active");
-  document.querySelector(".bookmark_control").value = "";
-});
-
-document.querySelector(".add_btn").addEventListener("click", (event) => {
-  const long = Number(event.target.getAttribute("long"));
-  const lati = Number(event.target.getAttribute("lati"));
-  let isEmpty = JSON.parse(localStorage.getItem("@locationBM"));
-  if (isEmpty === null) {
-    isEmpty = [];
-    const title = document.querySelector(".bookmark_control").value;
-    const location_number = [long, lati];
-    const entry = {
-      title: title,
-      location: location_number,
-    };
-    isEmpty.push(entry);
-    localStorage.setItem("@locationBM", JSON.stringify(isEmpty));
-  } else if (isEmpty !== null) {
-    isEmpty.push({
-      title: document.querySelector(".bookmark_control").value,
-      location: [long, lati],
-    });
-    localStorage.setItem("@locationBM", JSON.stringify(isEmpty));
-  }
-  document.querySelector(".bookmark_modal").classList.remove("active");
-  document.querySelector(".bookmark_control").value = "";
-  document.querySelector(".bm_btn").innerText = "★";
-});
-
 // NavigationControl/Direction/ Bookmark
 
 const nav = new mapboxgl.NavigationControl({
@@ -752,91 +747,144 @@ const nav = new mapboxgl.NavigationControl({
 });
 map.addControl(nav, "bottom-right");
 
-const input = document.querySelector("input[type=text]");
-const overlay = document.querySelector(".overlay");
-
-function showFloater() {
-  body.classList.add("show-floater");
-}
-
-function closeFloater() {
-  if (body.classList.contains("show-floater")) {
-    body.classList.remove("show-floater");
+function bringBookmark() {
+  if (document.querySelector(".instructions")) hideElement(".instructions");
+  if (document.querySelector(".station-card")) hideElement(".station-card");
+  if (document.querySelector(".stations")) hideElement(".stations");
+  showElement(".station-bookmark");
+  const bookmark_list = JSON.parse(localStorage.getItem("@locationBM"));
+  const bM = document.querySelector(".station-bookmark");
+  if (bookmark_list.length !== 0) {
+    makeBookmarkList(bookmark_list);
+  } else {
+    bM.innerHTML = `
+      <ul>
+        <li>Nothing!</li>
+      </ul>`;
   }
 }
-input.addEventListener("focusin", showFloater);
-overlay.addEventListener("click", closeFloater);
-// =========================
-const bookmarksList = document.querySelector(".bookmarks-list");
-const bookmarkForm = document.querySelector(".bookmark-form");
-const bookmarkInput = bookmarkForm.querySelector("input[type=text]");
-const bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
-const apiURL = "https://opengraph.io/api/1.0/site";
-const appID = "5900185f9b8ad70f00f5f8bd";
 
-fillList(bookmarks);
-
-function createBookmark(e) {
-  e.preventDefault();
-
-  if (!bookmarkInput.value) {
-    alert("Gotta add a link!");
-    return;
+function makeBookmarkList(array) {
+  let list = "";
+  let empty = [];
+  for (a of array) {
+    const title = a.title + makePElement("★", "starShape");
+    empty.push(title);
+    if (empty.length === array.length)
+      list += makeUlElement(empty, "", "bookmark_thing");
   }
-  const url = encodeURIComponent(bookmarkInput.value);
-  // add a new bookmark to the bookmarks
-
-  fetch(`${apiURL}/${url}?app_id=${appID}`)
-    .then((response) => response.json())
-    .then((data) => {
-      const title = bookmarkInput.value;
-      const bookmark = {
-        title: data.hybridGraph.title,
-        image: data.hybridGraph.image,
-        link: data.hybridGraph.url,
-      };
-      bookmarks.push(bookmark);
-      fillList(bookmarks);
-      storeBookmarks(bookmarks);
-      bookmarkForm.reset();
-    })
-    .catch((error) => {
-      alert(
-        'There was a problem retrieving the information. Please try again. Make sure to include the "http://"'
-      );
+  const bookmarkDiv = document.querySelector(".station-bookmark");
+  bookmarkDiv.innerHTML = list;
+  return list;
+}
+function settingLocalStorage(storage, locValue, [long, lati]) {
+  if (storage === null) {
+    storage = [];
+    const entry = {
+      title: locValue,
+      location: [long, lati],
+    };
+    storage.push(entry);
+    localStorage.setItem("@locationBM", JSON.stringify(storage));
+  } else if (storage !== null) {
+    storage.push({
+      title: locValue,
+      location: [long, lati],
     });
+    localStorage.setItem("@locationBM", JSON.stringify(storage));
+  }
 }
 
-function fillList(bookmarks = []) {
-  const bookmarksHtml = bookmarks
-    .map((bookmark, i) => {
-      return `
-    <a href="${bookmark.link}" class="bookmark" data-id="${i}" target="_blank">
-      <div class="img" style="background-image:url('${bookmark.image}')"></div>
-      <div class="title">${bookmark.title}</div>
-      <span class="fa fa-trash"></span>
-    </a>
-  `;
-    })
-    .join("");
-  bookmarksList.innerHTML = bookmarksHtml;
+if (window.innerWidth <= 790) {
+  const ctrlGroup = document.querySelector(".mapboxgl-ctrl-bottom-right");
+  ctrlGroup.style.bottom = `${window.innerHeight / 2}px`;
 }
 
-function removeBookmark(e) {
-  e.preventDefault();
-  if (!e.target.matches(".fa-trash")) return;
-  // find the index
-  const index = e.target.parentNode.dataset.id;
-  // remove from the bookmarks using splice
-  bookmarks.splice(index, 1);
-  // fill the list
-  fillList(bookmarks);
-  // store back to localStorage
-  storeBookmarks(bookmarks);
-}
+// const input = document.querySelector("input[type=text]");
+// const overlay = document.querySelector(".overlay");
 
-function storeBookmarks(bookmarks = []) {
-  localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
-}
-bookmarkForm.addEventListener("submit", createBookmark);
-bookmarksList.addEventListener("click", removeBookmark);
+// function showFloater() {
+//   body.classList.add("show-floater");
+// }
+
+// function closeFloater() {
+//   if (body.classList.contains("show-floater")) {
+//     body.classList.remove("show-floater");
+//   }
+// }
+// input.addEventListener("focusin", showFloater);
+// overlay.addEventListener("click", closeFloater);
+// // =========================
+// const bookmarksList = document.querySelector(".bookmarks-list");
+// const bookmarkForm = document.querySelector(".bookmark-form");
+// const bookmarkInput = bookmarkForm.querySelector("input[type=text]");
+// const bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+// const apiURL = "https://opengraph.io/api/1.0/site";
+// const appID = "5900185f9b8ad70f00f5f8bd";
+
+// fillList(bookmarks);
+
+// function createBookmark(e) {
+//   e.preventDefault();
+
+//   if (!bookmarkInput.value) {
+//     alert("Gotta add a link!");
+//     return;
+//   }
+//   const url = encodeURIComponent(bookmarkInput.value);
+//   // add a new bookmark to the bookmarks
+
+//   fetch(`${apiURL}/${url}?app_id=${appID}`)
+//     .then((response) => response.json())
+//     .then((data) => {
+//       const title = bookmarkInput.value;
+//       const bookmark = {
+//         title: data.hybridGraph.title,
+//         image: data.hybridGraph.image,
+//         link: data.hybridGraph.url,
+//       };
+//       bookmarks.push(bookmark);
+//       fillList(bookmarks);
+//       storeBookmarks(bookmarks);
+//       bookmarkForm.reset();
+//     })
+//     .catch((error) => {
+//       alert(
+//         'There was a problem retrieving the information. Please try again. Make sure to include the "http://"'
+//       );
+//     });
+// }
+
+// function fillList(bookmarks = []) {
+//   const bookmarksHtml = bookmarks
+//     .map((bookmark, i) => {
+//       return `
+//     <a href="${bookmark.link}" class="bookmark" data-id="${i}" target="_blank">
+//       <div class="img" style="background-image:url('${bookmark.image}')"></div>
+//       <div class="title">${bookmark.title}</div>
+//       <span class="fa fa-trash"></span>
+//     </a>
+//   `;
+//     })
+//     .join("");
+//   bookmarksList.innerHTML = bookmarksHtml;
+// }
+
+// function removeBookmark(e) {
+//   e.preventDefault();
+//   if (!e.target.matches(".fa-trash")) return;
+//   // find the index
+//   const index = e.target.parentNode.dataset.id;
+//   // remove from the bookmarks using splice
+//   bookmarks.splice(index, 1);
+//   // fill the list
+//   fillList(bookmarks);
+//   // store back to localStorage
+//   storeBookmarks(bookmarks);
+// }
+
+// function storeBookmarks(bookmarks = []) {
+//   localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+// }
+// bookmarkForm.addEventListener("submit", createBookmark);
+// bookmarksList.addEventListener("click", removeBookmark);
